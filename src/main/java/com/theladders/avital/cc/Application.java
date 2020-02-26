@@ -23,15 +23,19 @@ public class Application {
             addJob(employerName, jobName, jobType);
         }
         if (command == "apply") {
-            if (jobType.equals("JReq") && resumeApplicantName == null) {
-                addFailedApplications(employerName, jobName, jobType, applicationTime);
-                throw new RequiresResumeForJReqJobException();
-            }
-
-            if (jobType.equals("JReq") && !resumeApplicantName.equals(jobSeekerName)) {
-                throw new InvalidResumeException();
-            }
+            checkJobTypeWhenApplyCommand(employerName, jobName, jobType, jobSeekerName, resumeApplicantName, applicationTime);
             addApply(employerName, jobName, jobType, jobSeekerName, applicationTime);
+        }
+    }
+
+    private void checkJobTypeWhenApplyCommand(String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws RequiresResumeForJReqJobException, InvalidResumeException {
+        if (jobType.equals("JReq") && resumeApplicantName == null) {
+            addFailedApplications(employerName, jobName, jobType, applicationTime);
+            throw new RequiresResumeForJReqJobException();
+        }
+
+        if (jobType.equals("JReq") && !resumeApplicantName.equals(jobSeekerName)) {
+            throw new InvalidResumeException();
         }
     }
 
