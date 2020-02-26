@@ -183,15 +183,13 @@ public class Application {
             return result.toString();
         }
 
-        String content = "";
+        StringBuilder content = new StringBuilder();
         for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
             String applicant = set.getKey();
-            List<List<String>> jobs1 = set.getValue();
-            List<List<String>> appliedOnDate = jobs1.stream().filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))).collect(Collectors.toList());
-
-            for (List<String> job : appliedOnDate) {
-                content = content.concat("<tr>" + "<td>" + job.get(3) + "</td>" + "<td>" + job.get(0) + "</td>" + "<td>" + job.get(1) + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.get(2) + "</td>" + "</tr>");
-            }
+            content.append(set.getValue().stream()
+                    .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                    .map(job -> "<tr>" + "<td>" + job.get(3) + "</td>" + "<td>" + job.get(0) + "</td>" + "<td>" + job.get(1) + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.get(2) + "</td>" + "</tr>")
+                    .collect(Collectors.joining()));
         }
 
         return "<!DOCTYPE html>"
