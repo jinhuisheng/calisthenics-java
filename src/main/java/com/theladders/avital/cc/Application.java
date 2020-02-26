@@ -84,25 +84,20 @@ public class Application {
         Predicate<List<String>> predicate;
         if (from == null && to == null) {
             predicate = job -> job.get(0).equals(jobName);
-            return getApplicants(predicate);
         } else if (jobName == null && to == null) {
             predicate = job ->
                     !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            return getApplicants(predicate);
         } else if (jobName == null && from == null) {
             predicate = job ->
                     !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            return getApplicants(predicate);
         } else if (jobName == null) {
             predicate = job -> !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            return getApplicants(predicate);
         } else if (to != null) {
             predicate = job -> job.get(0).equals(jobName) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            return getApplicants(predicate);
         } else {
             predicate = job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            return getApplicants(predicate);
         }
+        return getApplicants(predicate);
     }
 
     private List<String> getApplicants(Predicate<List<String>> predicate) {
