@@ -84,10 +84,10 @@ public class Application {
         if (from == null && to == null) {
             List<String> result = new ArrayList<String>() {
             };
+            Predicate<List<String>> predicate = job -> job.get(0).equals(jobName);
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
-                Predicate<List<String>> predicate = job -> job.get(0).equals(jobName);
                 boolean hasAppliedToThisJob = jobs.stream().anyMatch(predicate);
                 if (hasAppliedToThisJob) {
                     result.add(applicant);
