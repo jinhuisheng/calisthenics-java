@@ -81,6 +81,11 @@ public class Application {
     }
 
     public List<String> findApplicants(String jobName, String employerName, LocalDate from, LocalDate to) {
+        Predicate<List<String>> predicate = queryCondition(jobName, from, to);
+        return getApplicants(predicate);
+    }
+
+    private Predicate<List<String>> queryCondition(String jobName, LocalDate from, LocalDate to) {
         Predicate<List<String>> predicate;
         if (from == null && to == null) {
             predicate = job -> job.get(0).equals(jobName);
@@ -97,7 +102,7 @@ public class Application {
         } else {
             predicate = job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
-        return getApplicants(predicate);
+        return predicate;
     }
 
     private List<String> getApplicants(Predicate<List<String>> predicate) {
