@@ -101,7 +101,7 @@ public class Application {
     private Predicate<List<String>> queryCondition(String jobName, LocalDate from, LocalDate to) {
         Predicate<List<String>> predicate;
         if (from == null && to == null) {
-            predicate = job -> job.get(0).equals(jobName);
+            return job -> job.get(0).equals(jobName);
         } else if (jobName == null && to == null) {
             predicate = job ->
                     !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
@@ -193,7 +193,6 @@ public class Application {
         int result = 0;
         for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
             List<List<String>> jobs = set.getValue();
-
             result += jobs.stream().anyMatch(job -> job.get(3).equals(employerName) && job.get(0).equals(jobName)) ? 1 : 0;
         }
         return result;
