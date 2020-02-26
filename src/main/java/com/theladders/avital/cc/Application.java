@@ -82,41 +82,30 @@ public class Application {
 
     public List<String> findApplicants(String jobName, String employerName, LocalDate from, LocalDate to) {
         if (from == null && to == null) {
-            List<String> result = new ArrayList<String>() {
-            };
             Predicate<List<String>> predicate = job -> job.get(0).equals(jobName);
             return getApplicants(predicate);
         }
         if (jobName == null && to == null) {
-            List<String> result = new ArrayList<String>() {
-            };
             Predicate<List<String>> predicate = job ->
                     !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
         }
         if (jobName == null && from == null) {
-            List<String> result = new ArrayList<String>() {
-            };
             Predicate<List<String>> predicate = job ->
                     !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
 
         }
         if (jobName == null) {
-            List<String> result = new ArrayList<String>() {
-            };
             Predicate<List<String>> predicate = job -> !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
 
         }
         if (to != null) {
-            List<String> result = new ArrayList<String>() {
-            };
             Predicate<List<String>> predicate = job -> job.get(0).equals(jobName) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
         }
-        List<String> result = new ArrayList<String>() {
-        };
+
         Predicate<List<String>> predicate = job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         return getApplicants(predicate);
 
