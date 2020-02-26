@@ -15,9 +15,7 @@ public class Application {
 
     public void execute(String command, String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
         if (command == "publish") {
-            if (!jobType.equals("JReq") && !jobType.equals("ATS")) {
-                throw new NotSupportedJobTypeException();
-            }
+            checkJobTypeWhenPublish(jobType);
             addJob(employerName, jobName, jobType);
             return;
         }
@@ -34,6 +32,12 @@ public class Application {
                 throw new InvalidResumeException();
             }
             addApply(employerName, jobName, jobType, jobSeekerName, applicationTime);
+        }
+    }
+
+    private void checkJobTypeWhenPublish(String jobType) throws NotSupportedJobTypeException {
+        if (!jobType.equals("JReq") && !jobType.equals("ATS")) {
+            throw new NotSupportedJobTypeException();
         }
     }
 
