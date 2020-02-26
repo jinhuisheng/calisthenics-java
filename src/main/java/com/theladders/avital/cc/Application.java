@@ -163,19 +163,24 @@ public class Application {
 
     }
 
+    /**
+     * 导出已申请的数据
+     *
+     * @param type
+     * @param date
+     * @return
+     */
     public String export(String type, LocalDate date) {
         if (type == "csv") {
-            String result = "Employer,Job,Job Type,Applicants,Date" + "\n";
+            StringBuilder result = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
-                List<List<String>> jobs1 = set.getValue();
-                List<List<String>> appliedOnDate = jobs1.stream().filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))).collect(Collectors.toList());
-
-                for (List<String> job : appliedOnDate) {
-                    result = result.concat(job.get(3) + "," + job.get(0) + "," + job.get(1) + "," + applicant + "," + job.get(2) + "\n");
-                }
+                result.append(set.getValue().stream()
+                        .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                        .map(job -> job.get(3) + "," + job.get(0) + "," + job.get(1) + "," + applicant + "," + job.get(2) + "\n")
+                        .collect(Collectors.joining()));
             }
-            return result;
+            return result.toString();
         }
 
         String content = "";
