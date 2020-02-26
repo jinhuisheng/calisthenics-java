@@ -79,9 +79,7 @@ public class Application {
     public List<String> findApplicants(String jobName, String employerName, LocalDate from, LocalDate to) {
         if (from == null && to == null) {
             List<String> result = new ArrayList<String>() {};
-            Iterator<Entry<String, List<List<String>>>> iterator = this.applied.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, List<List<String>>> set = iterator.next();
+            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
                 boolean hasAppliedToThisJob = jobs.stream().anyMatch(job -> job.get(0).equals(jobName));
@@ -92,9 +90,7 @@ public class Application {
             return result;
         } else if (jobName == null && to == null) {
             List<String> result = new ArrayList<String>() {};
-            Iterator<Entry<String, List<List<String>>>> iterator = this.applied.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, List<List<String>>> set = iterator.next();
+            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
                 boolean isAppliedThisDate = jobs.stream().anyMatch(job ->
@@ -106,9 +102,7 @@ public class Application {
             return result;
         } else if (jobName == null && from == null) {
             List<String> result = new ArrayList<String>() {};
-            Iterator<Entry<String, List<List<String>>>> iterator = this.applied.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, List<List<String>>> set = iterator.next();
+            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
                 boolean isAppliedThisDate = jobs.stream().anyMatch(job ->
@@ -121,9 +115,7 @@ public class Application {
 
         } else if (jobName == null) {
             List<String> result = new ArrayList<String>() {};
-            Iterator<Entry<String, List<List<String>>>> iterator = this.applied.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, List<List<String>>> set = iterator.next();
+            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
                 boolean isAppliedThisDate = jobs.stream().anyMatch(job -> !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
@@ -135,9 +127,7 @@ public class Application {
 
         } else if (to != null) {
             List<String> result = new ArrayList<String>() {};
-            Iterator<Entry<String, List<List<String>>>> iterator = this.applied.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, List<List<String>>> set = iterator.next();
+            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
                 boolean isAppliedThisDate = jobs.stream().anyMatch(job -> job.get(0).equals(jobName) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
@@ -148,9 +138,7 @@ public class Application {
             return result;
         } else {
             List<String> result = new ArrayList<String>() {};
-            Iterator<Entry<String, List<List<String>>>> iterator = this.applied.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, List<List<String>>> set = iterator.next();
+            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
                 boolean isAppliedThisDate = jobs.stream().anyMatch(job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
@@ -165,9 +153,7 @@ public class Application {
     public String export(String type, LocalDate date) {
         if (type == "csv") {
             String result = "Employer,Job,Job Type,Applicants,Date" + "\n";
-            Iterator<Entry<String, List<List<String>>>> iterator = this.applied.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, List<List<String>>> set = iterator.next();
+            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs1 = set.getValue();
                 List<List<String>> appliedOnDate = jobs1.stream().filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))).collect(Collectors.toList());
@@ -179,9 +165,7 @@ public class Application {
             return result;
         } else {
             String content = "";
-            Iterator<Entry<String, List<List<String>>>> iterator = this.applied.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Entry<String, List<List<String>>> set = iterator.next();
+            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs1 = set.getValue();
                 List<List<String>> appliedOnDate = jobs1.stream().filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))).collect(Collectors.toList());
@@ -214,9 +198,7 @@ public class Application {
 
     public int getSuccessfulApplications(String employerName, String jobName) {
         int result = 0;
-        Iterator<Entry<String, List<List<String>>>> iterator = this.applied.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry<String, List<List<String>>> set = iterator.next();
+        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
             List<List<String>> jobs = set.getValue();
 
             result += jobs.stream().anyMatch(job -> job.get(3).equals(employerName) && job.get(0).equals(jobName)) ? 1 : 0;
