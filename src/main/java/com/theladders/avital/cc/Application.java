@@ -173,8 +173,9 @@ public class Application {
     public String export(String type, LocalDate date) {
         if ("csv".equals(type)) {
             return exportCsv(date);
+        } else {
+            return exportHtml(date);
         }
-        return exportHtml(date);
     }
 
     private String exportHtml(LocalDate date) {
