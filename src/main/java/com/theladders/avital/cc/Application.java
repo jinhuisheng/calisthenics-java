@@ -84,31 +84,24 @@ public class Application {
         if (from == null && to == null) {
             Predicate<List<String>> predicate = job -> job.get(0).equals(jobName);
             return getApplicants(predicate);
-        }
-        if (jobName == null && to == null) {
+        } else if (jobName == null && to == null) {
             Predicate<List<String>> predicate = job ->
                     !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
-        }
-        if (jobName == null && from == null) {
+        } else if (jobName == null && from == null) {
             Predicate<List<String>> predicate = job ->
                     !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
-
-        }
-        if (jobName == null) {
+        } else if (jobName == null) {
             Predicate<List<String>> predicate = job -> !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
-
-        }
-        if (to != null) {
+        } else if (to != null) {
             Predicate<List<String>> predicate = job -> job.get(0).equals(jobName) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
+        } else {
+            Predicate<List<String>> predicate = job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            return getApplicants(predicate);
         }
-
-        Predicate<List<String>> predicate = job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        return getApplicants(predicate);
-
     }
 
     private List<String> getApplicants(Predicate<List<String>> predicate) {
