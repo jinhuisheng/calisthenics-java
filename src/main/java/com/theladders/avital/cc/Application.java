@@ -25,7 +25,9 @@ public class Application {
                 add(jobType);
             }});
             jobs.put(employerName, alreadyPublished);
-        } else if (command == "save") {
+            return;
+        }
+        if (command == "save") {
             List<List<String>> saved = jobs.getOrDefault(employerName, new ArrayList<>());
 
             saved.add(new ArrayList<String>() {{
@@ -33,7 +35,8 @@ public class Application {
                 add(jobType);
             }});
             jobs.put(employerName, saved);
-        } else if (command == "apply") {
+        }
+        if (command == "apply") {
             if (jobType.equals("JReq") && resumeApplicantName == null) {
                 List<String> failedApplication = new ArrayList<String>() {{
                     add(jobName);
@@ -78,7 +81,8 @@ public class Application {
 
     public List<String> findApplicants(String jobName, String employerName, LocalDate from, LocalDate to) {
         if (from == null && to == null) {
-            List<String> result = new ArrayList<String>() {};
+            List<String> result = new ArrayList<String>() {
+            };
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
@@ -88,8 +92,10 @@ public class Application {
                 }
             }
             return result;
-        } else if (jobName == null && to == null) {
-            List<String> result = new ArrayList<String>() {};
+        }
+        if (jobName == null && to == null) {
+            List<String> result = new ArrayList<String>() {
+            };
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
@@ -100,8 +106,10 @@ public class Application {
                 }
             }
             return result;
-        } else if (jobName == null && from == null) {
-            List<String> result = new ArrayList<String>() {};
+        }
+        if (jobName == null && from == null) {
+            List<String> result = new ArrayList<String>() {
+            };
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
@@ -113,8 +121,10 @@ public class Application {
             }
             return result;
 
-        } else if (jobName == null) {
-            List<String> result = new ArrayList<String>() {};
+        }
+        if (jobName == null) {
+            List<String> result = new ArrayList<String>() {
+            };
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
@@ -125,8 +135,10 @@ public class Application {
             }
             return result;
 
-        } else if (to != null) {
-            List<String> result = new ArrayList<String>() {};
+        }
+        if (to != null) {
+            List<String> result = new ArrayList<String>() {
+            };
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
@@ -136,18 +148,19 @@ public class Application {
                 }
             }
             return result;
-        } else {
-            List<String> result = new ArrayList<String>() {};
-            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
-                String applicant = set.getKey();
-                List<List<String>> jobs = set.getValue();
-                boolean isAppliedThisDate = jobs.stream().anyMatch(job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
-                if (isAppliedThisDate) {
-                    result.add(applicant);
-                }
-            }
-            return result;
         }
+        List<String> result = new ArrayList<String>() {
+        };
+        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
+            String applicant = set.getKey();
+            List<List<String>> jobs = set.getValue();
+            boolean isAppliedThisDate = jobs.stream().anyMatch(job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+            if (isAppliedThisDate) {
+                result.add(applicant);
+            }
+        }
+        return result;
+
     }
 
     public String export(String type, LocalDate date) {
@@ -163,37 +176,37 @@ public class Application {
                 }
             }
             return result;
-        } else {
-            String content = "";
-            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
-                String applicant = set.getKey();
-                List<List<String>> jobs1 = set.getValue();
-                List<List<String>> appliedOnDate = jobs1.stream().filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))).collect(Collectors.toList());
-
-                for (List<String> job : appliedOnDate) {
-                    content = content.concat("<tr>" + "<td>" + job.get(3) + "</td>" + "<td>" + job.get(0) + "</td>" + "<td>" + job.get(1) + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.get(2) + "</td>" + "</tr>");
-                }
-            }
-
-            return "<!DOCTYPE html>"
-                    + "<body>"
-                    + "<table>"
-                    + "<thead>"
-                    + "<tr>"
-                    + "<th>Employer</th>"
-                    + "<th>Job</th>"
-                    + "<th>Job Type</th>"
-                    + "<th>Applicants</th>"
-                    + "<th>Date</th>"
-                    + "</tr>"
-                    + "</thead>"
-                    + "<tbody>"
-                    + content
-                    + "</tbody>"
-                    + "</table>"
-                    + "</body>"
-                    + "</html>";
         }
+
+        String content = "";
+        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
+            String applicant = set.getKey();
+            List<List<String>> jobs1 = set.getValue();
+            List<List<String>> appliedOnDate = jobs1.stream().filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))).collect(Collectors.toList());
+
+            for (List<String> job : appliedOnDate) {
+                content = content.concat("<tr>" + "<td>" + job.get(3) + "</td>" + "<td>" + job.get(0) + "</td>" + "<td>" + job.get(1) + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.get(2) + "</td>" + "</tr>");
+            }
+        }
+
+        return "<!DOCTYPE html>"
+                + "<body>"
+                + "<table>"
+                + "<thead>"
+                + "<tr>"
+                + "<th>Employer</th>"
+                + "<th>Job</th>"
+                + "<th>Job Type</th>"
+                + "<th>Applicants</th>"
+                + "<th>Date</th>"
+                + "</tr>"
+                + "</thead>"
+                + "<tbody>"
+                + content
+                + "</tbody>"
+                + "</table>"
+                + "</body>"
+                + "</html>";
     }
 
     public int getSuccessfulApplications(String employerName, String jobName) {
