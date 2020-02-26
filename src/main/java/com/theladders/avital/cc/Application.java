@@ -3,6 +3,7 @@ package com.theladders.avital.cc;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Map.*;
@@ -86,7 +87,8 @@ public class Application {
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
-                boolean hasAppliedToThisJob = jobs.stream().anyMatch(job -> job.get(0).equals(jobName));
+                Predicate<List<String>> predicate = job -> job.get(0).equals(jobName);
+                boolean hasAppliedToThisJob = jobs.stream().anyMatch(predicate);
                 if (hasAppliedToThisJob) {
                     result.add(applicant);
                 }
@@ -99,8 +101,9 @@ public class Application {
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
-                boolean isAppliedThisDate = jobs.stream().anyMatch(job ->
-                        !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+                Predicate<List<String>> predicate = job ->
+                        !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                boolean isAppliedThisDate = jobs.stream().anyMatch(predicate);
                 if (isAppliedThisDate) {
                     result.add(applicant);
                 }
@@ -113,8 +116,9 @@ public class Application {
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
-                boolean isAppliedThisDate = jobs.stream().anyMatch(job ->
-                        !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+                Predicate<List<String>> predicate = job ->
+                        !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                boolean isAppliedThisDate = jobs.stream().anyMatch(predicate);
                 if (isAppliedThisDate) {
                     result.add(applicant);
                 }
@@ -128,7 +132,8 @@ public class Application {
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
-                boolean isAppliedThisDate = jobs.stream().anyMatch(job -> !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+                Predicate<List<String>> predicate = job -> !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                boolean isAppliedThisDate = jobs.stream().anyMatch(predicate);
                 if (isAppliedThisDate) {
                     result.add(applicant);
                 }
@@ -142,7 +147,8 @@ public class Application {
             for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
                 String applicant = set.getKey();
                 List<List<String>> jobs = set.getValue();
-                boolean isAppliedThisDate = jobs.stream().anyMatch(job -> job.get(0).equals(jobName) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+                Predicate<List<String>> predicate = job -> job.get(0).equals(jobName) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                boolean isAppliedThisDate = jobs.stream().anyMatch(predicate);
                 if (isAppliedThisDate) {
                     result.add(applicant);
                 }
@@ -154,7 +160,8 @@ public class Application {
         for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
             String applicant = set.getKey();
             List<List<String>> jobs = set.getValue();
-            boolean isAppliedThisDate = jobs.stream().anyMatch(job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+            Predicate<List<String>> predicate = job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            boolean isAppliedThisDate = jobs.stream().anyMatch(predicate);
             if (isAppliedThisDate) {
                 result.add(applicant);
             }
