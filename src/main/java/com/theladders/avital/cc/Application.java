@@ -99,7 +99,6 @@ public class Application {
     }
 
     private Predicate<List<String>> queryCondition(String jobName, LocalDate from, LocalDate to) {
-        Predicate<List<String>> predicate;
         if (from == null && to == null) {
             return job -> job.get(0).equals(jobName);
         }
