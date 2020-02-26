@@ -81,25 +81,26 @@ public class Application {
     }
 
     public List<String> findApplicants(String jobName, String employerName, LocalDate from, LocalDate to) {
+        Predicate<List<String>> predicate;
         if (from == null && to == null) {
-            Predicate<List<String>> predicate = job -> job.get(0).equals(jobName);
+            predicate = job -> job.get(0).equals(jobName);
             return getApplicants(predicate);
         } else if (jobName == null && to == null) {
-            Predicate<List<String>> predicate = job ->
+            predicate = job ->
                     !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
         } else if (jobName == null && from == null) {
-            Predicate<List<String>> predicate = job ->
+            predicate = job ->
                     !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
         } else if (jobName == null) {
-            Predicate<List<String>> predicate = job -> !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            predicate = job -> !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
         } else if (to != null) {
-            Predicate<List<String>> predicate = job -> job.get(0).equals(jobName) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            predicate = job -> job.get(0).equals(jobName) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
         } else {
-            Predicate<List<String>> predicate = job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            predicate = job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             return getApplicants(predicate);
         }
     }
