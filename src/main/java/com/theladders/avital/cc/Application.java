@@ -18,50 +18,55 @@ public class Application {
             if (!jobType.equals("JReq") && !jobType.equals("ATS")) {
                 throw new NotSupportedJobTypeException();
             }
-
-            List<List<String>> alreadyPublished = jobs.getOrDefault(employerName, new ArrayList<>());
-
-            alreadyPublished.add(new ArrayList<String>() {{
-                add(jobName);
-                add(jobType);
-            }});
-            jobs.put(employerName, alreadyPublished);
+            addJob(employerName, jobName, jobType);
             return;
         }
         if (command == "save") {
-            List<List<String>> saved = jobs.getOrDefault(employerName, new ArrayList<>());
-
-            saved.add(new ArrayList<String>() {{
-                add(jobName);
-                add(jobType);
-            }});
-            jobs.put(employerName, saved);
+            addJob(employerName, jobName, jobType);
         }
         if (command == "apply") {
             if (jobType.equals("JReq") && resumeApplicantName == null) {
-                List<String> failedApplication = new ArrayList<String>() {{
-                    add(jobName);
-                    add(jobType);
-                    add(applicationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                    add(employerName);
-                }};
-                failedApplications.add(failedApplication);
+                addFailedApplications(employerName, jobName, jobType, applicationTime);
                 throw new RequiresResumeForJReqJobException();
             }
 
             if (jobType.equals("JReq") && !resumeApplicantName.equals(jobSeekerName)) {
                 throw new InvalidResumeException();
             }
-            List<List<String>> saved = this.applied.getOrDefault(jobSeekerName, new ArrayList<>());
-
-            saved.add(new ArrayList<String>() {{
-                add(jobName);
-                add(jobType);
-                add(applicationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                add(employerName);
-            }});
-            applied.put(jobSeekerName, saved);
+            addApply(employerName, jobName, jobType, jobSeekerName, applicationTime);
         }
+    }
+
+    private void addFailedApplications(String employerName, String jobName, String jobType, LocalDate applicationTime) {
+        List<String> failedApplication = new ArrayList<String>() {{
+            add(jobName);
+            add(jobType);
+            add(applicationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            add(employerName);
+        }};
+        failedApplications.add(failedApplication);
+    }
+
+    private void addApply(String employerName, String jobName, String jobType, String jobSeekerName, LocalDate applicationTime) {
+        List<List<String>> saved = this.applied.getOrDefault(jobSeekerName, new ArrayList<>());
+
+        saved.add(new ArrayList<String>() {{
+            add(jobName);
+            add(jobType);
+            add(applicationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            add(employerName);
+        }});
+        applied.put(jobSeekerName, saved);
+    }
+
+    private void addJob(String employerName, String jobName, String jobType) {
+        List<List<String>> saved = jobs.getOrDefault(employerName, new ArrayList<>());
+
+        saved.add(new ArrayList<String>() {{
+            add(jobName);
+            add(jobType);
+        }});
+        jobs.put(employerName, saved);
     }
 
     public List<List<String>> getJobs(String employerName, String type) {
