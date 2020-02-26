@@ -172,17 +172,12 @@ public class Application {
      */
     public String export(String type, LocalDate date) {
         if (type == "csv") {
-            StringBuilder result = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
-            for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
-                String applicant = set.getKey();
-                result.append(set.getValue().stream()
-                        .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
-                        .map(job -> job.get(3) + "," + job.get(0) + "," + job.get(1) + "," + applicant + "," + job.get(2) + "\n")
-                        .collect(Collectors.joining()));
-            }
-            return result.toString();
+            return exportCsv(date);
         }
+        return exportHtml(date);
+    }
 
+    private String exportHtml(LocalDate date) {
         StringBuilder content = new StringBuilder();
         for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
             String applicant = set.getKey();
@@ -210,6 +205,18 @@ public class Application {
                 + "</table>"
                 + "</body>"
                 + "</html>";
+    }
+
+    private String exportCsv(LocalDate date) {
+        StringBuilder result = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
+        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
+            String applicant = set.getKey();
+            result.append(set.getValue().stream()
+                    .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                    .map(job -> job.get(3) + "," + job.get(0) + "," + job.get(1) + "," + applicant + "," + job.get(2) + "\n")
+                    .collect(Collectors.joining()));
+        }
+        return result.toString();
     }
 
     public int getSuccessfulApplications(String employerName, String jobName) {
