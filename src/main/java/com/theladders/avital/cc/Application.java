@@ -72,18 +72,26 @@ public class Application {
 
     public List<List<String>> getJobs(String employerName, String type) {
         if (type.equals("applied")) {
-            return jobSeekerApplications.get(employerName).stream()
-                    .map(job -> new ArrayList<String>() {{
-                        add(job.getJobName());
-                        add(job.getJobType());
-                        add(job.getApplicationTime());
-                        add(job.getEmployerName());
-                    }}).collect(Collectors.toList());
+            return getJobSeekerApplications(employerName);
         }
+        return getEmployerJobs(employerName);
+    }
+
+    private List<List<String>> getEmployerJobs(String employerName) {
         return employerJobs.get(employerName).stream()
                 .map(job -> new ArrayList<String>() {{
                     add(job.getJobName());
                     add(job.getJobType());
+                }}).collect(Collectors.toList());
+    }
+
+    private List<List<String>> getJobSeekerApplications(String employerName) {
+        return jobSeekerApplications.get(employerName).stream()
+                .map(job -> new ArrayList<String>() {{
+                    add(job.getJobName());
+                    add(job.getJobType());
+                    add(job.getApplicationTime());
+                    add(job.getEmployerName());
                 }}).collect(Collectors.toList());
     }
 
