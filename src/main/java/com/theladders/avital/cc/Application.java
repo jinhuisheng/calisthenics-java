@@ -129,6 +129,17 @@ public class Application {
     private List<String> getApplicants(Predicate<List<String>> predicate) {
         List<String> result = new ArrayList<String>() {
         };
+
+        this.jobSeekerApplications.entrySet().stream().filter(set -> {
+            List<JobApplication> jobs = set.getValue();
+            return jobs.stream().map(job -> new ArrayList<String>() {{
+                add(job.getJobName());
+                add(job.getJobType());
+                add(job.getApplicationTime());
+                add(job.getEmployerName());
+            }}).anyMatch(predicate);
+        }).map(Entry::getKey).collect(Collectors.toList());
+
         for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
             String applicant = set.getKey();
             List<List<String>> jobs = set.getValue();
