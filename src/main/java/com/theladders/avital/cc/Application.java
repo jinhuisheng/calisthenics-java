@@ -69,31 +69,32 @@ public class Application {
     }
 
     private void addJob(String employerName, String jobName, String jobType) {
-        List<List<String>> saved = jobs.getOrDefault(employerName, new ArrayList<>());
-
+//        List<List<String>> saved = jobs.getOrDefault(employerName, new ArrayList<>());
+//
 
         List<Job> savedJobs = employerJobs.getOrDefault(employerName, new ArrayList<>());
         Job job = new Job(jobName, jobType);
         savedJobs.add(job);
         employerJobs.put(employerName, savedJobs);
 
-        saved.add(new ArrayList<String>() {{
-            add(jobName);
-            add(jobType);
-        }});
-        jobs.put(employerName, saved);
+//        saved.add(new ArrayList<String>() {{
+//            add(jobName);
+//            add(jobType);
+//        }});
+//        jobs.put(employerName, saved);
     }
 
     public List<List<String>> getJobs(String employerName, String type) {
         if (type.equals("applied")) {
             return applied.get(employerName);
         }
-        List<ArrayList> result = employerJobs.get(employerName).stream()
+        List<List<String>> result = employerJobs.get(employerName).stream()
                 .map(job -> new ArrayList() {{
                     add(job.getJobName());
                     add(job.getJobType());
                 }}).collect(Collectors.toList());
-        return jobs.get(employerName);
+        return result;
+//        return jobs.get(employerName);
     }
 
     public List<String> findApplicants(String jobName, String employerName) {
