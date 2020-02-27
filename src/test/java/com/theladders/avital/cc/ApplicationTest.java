@@ -23,6 +23,11 @@ public class ApplicationTest {
         }};
     }
 
+    private JobApplication createJobApplication(String jobName, String jobType, String employerName, String applicationTime) {
+        return new JobApplication(jobName, jobType, applicationTime, employerName);
+    }
+
+
     private ArrayList<String> createNewJob(final String jobName, final String jobType) {
         return new ArrayList<String>() {{
             add(jobName);
