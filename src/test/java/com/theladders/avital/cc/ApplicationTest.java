@@ -35,19 +35,12 @@ public class ApplicationTest {
         String employerName = "";
         String jobName = "高级前端开发";
         application.execute("publish", employerName, jobName, "JReq", null, null, null);
-        List<List<String>> jobs = application.getEmployerJobs(employerName);
-        List<List<String>> expected = new ArrayList<List<String>>() {{
-            add(createNewJob("高级前端开发", "JReq"));
-        }};
-
         List<Job> jobs_temp = application.getEmployerJobs_temp(employerName);
         List<Job> expected_temp = new ArrayList<Job>() {{
             add(new Job("高级前端开发", "JReq"));
         }};
 
         assertThat(jobs_temp,is(expected_temp));
-
-        assertThat(jobs, is(expected));
     }
 
     @Test
