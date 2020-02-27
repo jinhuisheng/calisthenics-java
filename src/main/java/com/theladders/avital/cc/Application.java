@@ -81,8 +81,8 @@ public class Application {
     }
 
     public List<String> findApplicants(String jobName, String employerName, LocalDate from, LocalDate to) {
-        Predicate<List<String>> predicate = queryCondition(jobName, from, to);
-        return getApplicants(predicate);
+        Predicate<JobApplication> predicate = queryCondition_temp(jobName, from, to);
+        return getApplicants_temp(predicate);
     }
 
     private Predicate<List<String>> queryCondition(String jobName, LocalDate from, LocalDate to) {
