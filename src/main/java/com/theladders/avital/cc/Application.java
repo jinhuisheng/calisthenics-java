@@ -86,7 +86,7 @@ public class Application {
             return applied.get(employerName);
         }
         return employerJobs.get(employerName).stream()
-                .map(job -> new ArrayList() {{
+                .map(job -> new ArrayList<String>() {{
                     add(job.getJobName());
                     add(job.getJobType());
                 }}).collect(Collectors.toList());
