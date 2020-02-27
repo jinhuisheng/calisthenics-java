@@ -16,7 +16,7 @@ public class Application {
 
     public void execute(String command, String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
         if (command == "save") {
-            addJob(employerName, jobName, jobType);
+            saveSeekerConcernJob(employerName, jobName, jobType);
         }
         if (command == "apply") {
             checkJobTypeWhenApplyCommand(employerName, jobName, jobType, jobSeekerName, resumeApplicantName, applicationTime);
@@ -63,6 +63,14 @@ public class Application {
         savedJobs.add(job);
         employerJobs.put(employerName, savedJobs);
     }
+
+    private void saveSeekerConcernJob(String employerName, String jobName, String jobType) {
+        List<Job> savedJobs = employerJobs.getOrDefault(employerName, new ArrayList<>());
+        Job job = new Job(jobName, jobType);
+        savedJobs.add(job);
+        employerJobs.put(employerName, savedJobs);
+    }
+
 
     List<Job> getEmployerJobs(String employerName) {
         return employerJobs.get(employerName);
