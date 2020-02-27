@@ -14,7 +14,7 @@ public class Application {
     private List<JobApplication> failedApplications = new ArrayList<>();
 
 
-    public void execute(String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
+    public void applyJob(String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
         checkJobTypeWhenApplyCommand(employerName, jobName, jobType, jobSeekerName, resumeApplicantName, applicationTime);
         addApply(employerName, jobName, jobType, jobSeekerName, applicationTime);
     }
