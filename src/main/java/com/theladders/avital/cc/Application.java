@@ -212,6 +212,21 @@ public class Application {
     }
 
     private String exportCsv(LocalDate date) {
+        StringBuilder newResult = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
+        for (Entry<String, List<JobApplication>> set : this.jobSeekerApplications.entrySet()) {
+            String applicant = set.getKey();
+            newResult.append(set.getValue().stream()
+                    .map(job -> new ArrayList<String>() {{
+                        add(job.getJobName());
+                        add(job.getJobType());
+                        add(job.getApplicationTime());
+                        add(job.getEmployerName());
+                    }})
+                    .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                    .map(job -> job.get(3) + "," + job.get(0) + "," + job.get(1) + "," + applicant + "," + job.get(2) + "\n")
+                    .collect(Collectors.joining()));
+        }
+
         StringBuilder result = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
         for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
             String applicant = set.getKey();
