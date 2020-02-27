@@ -70,13 +70,6 @@ public class Application {
         employerJobs.put(employerName, savedJobs);
     }
 
-    public List<List<String>> getJobs(String employerName, String type) {
-        if (type.equals("applied")) {
-            return getJobSeekerApplications(employerName);
-        }
-        return getEmployerJobs(employerName);
-    }
-
     List<List<String>> getEmployerJobs(String employerName) {
         return employerJobs.get(employerName).stream()
                 .map(job -> new ArrayList<String>() {{
