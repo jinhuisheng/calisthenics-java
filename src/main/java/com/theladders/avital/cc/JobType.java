@@ -13,4 +13,8 @@ public enum JobType {
     JobType(String name) {
         this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
 }
