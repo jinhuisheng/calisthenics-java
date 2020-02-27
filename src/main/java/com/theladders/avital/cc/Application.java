@@ -70,6 +70,7 @@ public class Application {
     private void addJob(String employerName, String jobName, String jobType) {
         List<List<String>> saved = jobs.getOrDefault(employerName, new ArrayList<>());
 
+        Job job = new Job(jobName, jobType);
         saved.add(new ArrayList<String>() {{
             add(jobName);
             add(jobType);
