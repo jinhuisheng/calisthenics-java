@@ -13,18 +13,6 @@ import static org.junit.Assert.assertThat;
 public class ApplicationTest {
     Application application;
 
-    private JobApplication createJobApplication(String jobName, String jobType, String employerName, String applicationTime) {
-        return new JobApplication(jobName, jobType, applicationTime, employerName);
-    }
-
-
-    private ArrayList<String> createNewJob(final String jobName, final String jobType) {
-        return new ArrayList<String>() {{
-            add(jobName);
-            add(jobType);
-        }};
-    }
-
     @Before
     public void setUp() throws Exception {
         application = new Application();
@@ -35,7 +23,7 @@ public class ApplicationTest {
         String employerName = "";
         String jobName = "高级前端开发";
         application.execute("publish", employerName, jobName, "JReq", null, null, null);
-        List<Job> jobs = application.getEmployerJobs_temp(employerName);
+        List<Job> jobs = application.getEmployerJobs(employerName);
         List<Job> expected = new ArrayList<Job>() {{
             add(new Job("高级前端开发", "JReq"));
         }};
@@ -52,7 +40,7 @@ public class ApplicationTest {
         application.execute("publish", employerAlibaba, seniorJavaDevJob, "JReq", null, null, null);
         application.execute("publish", employerTencent, juniorJavaDevJob, "JReq", null, null, null);
 
-        List<Job> jobs = application.getEmployerJobs_temp(employerAlibaba);
+        List<Job> jobs = application.getEmployerJobs(employerAlibaba);
         List<Job> expected = new ArrayList<Job>() {{
             add(new Job("高级Java开发", "JReq"));
         }};
@@ -67,7 +55,7 @@ public class ApplicationTest {
 
         application.execute("publish", employerAlibaba, seniorJavaDevJob, "ATS", null, null, null);
 
-        List<Job> jobs = application.getEmployerJobs_temp(employerAlibaba);
+        List<Job> jobs = application.getEmployerJobs(employerAlibaba);
         List<Job> expected = new ArrayList<Job>() {{
             add(new Job("高级Java开发", "ATS"));
         }};
@@ -92,7 +80,7 @@ public class ApplicationTest {
         application.execute("publish", employerAlibaba, jobName, "JReq", null, null, null);
         application.execute("save", jobSeekerName, jobName, "JReq", null, null, null);
 
-        List<Job> jobs = application.getEmployerJobs_temp(jobSeekerName);
+        List<Job> jobs = application.getEmployerJobs(jobSeekerName);
         List<Job> expected = new ArrayList<Job>() {{
             add(new Job("高级Java开发", "JReq"));
         }};
@@ -114,8 +102,8 @@ public class ApplicationTest {
 
         List<JobApplication> appliedJobs = application.getJobSeekerApplications(jobSeekerName);
         List<JobApplication> expected = new ArrayList<JobApplication>() {{
-            add(createJobApplication("Java开发", "ATS", "Alibaba", "2020-01-01"));
-            add(createJobApplication("高级Java开发", "ATS", "Alibaba", "2020-01-01"));
+            add(new JobApplication("Java开发", "ATS", "2020-01-01", "Alibaba"));
+            add(new JobApplication("高级Java开发", "ATS", "2020-01-01", "Alibaba"));
         }};
         assertThat(appliedJobs, is(expected));
     }

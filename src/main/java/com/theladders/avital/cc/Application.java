@@ -70,15 +70,7 @@ public class Application {
         employerJobs.put(employerName, savedJobs);
     }
 
-    List<List<String>> getEmployerJobs(String employerName) {
-        return getEmployerJobs_temp(employerName).stream()
-                .map(job -> new ArrayList<String>() {{
-                    add(job.getJobName());
-                    add(job.getJobType());
-                }}).collect(Collectors.toList());
-    }
-
-    List<Job> getEmployerJobs_temp(String employerName) {
+    List<Job> getEmployerJobs(String employerName) {
         return employerJobs.get(employerName);
     }
 
