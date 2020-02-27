@@ -21,23 +21,23 @@ public class Application {
     }
 
     void publishJob(String employerName, String jobName, String jobType) throws NotSupportedJobTypeException {
-        checkJobTypeWhenPublish(jobType);
+        checkJobTypeWhenPublish(JobType.fromName(jobType));
         addJob(employerName, jobName, jobType);
     }
 
     private void checkJobTypeWhenApplyCommand(String employerName, String jobName, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime, JobType jobType) throws RequiresResumeForJReqJobException, InvalidResumeException {
-        if (jobType.equals(JobType.JREQ) && resumeApplicantName == null) {
+        if (jobType.equals(JobType.JReq) && resumeApplicantName == null) {
             addFailedApplications(employerName, jobName, jobType.getName(), applicationTime);
             throw new RequiresResumeForJReqJobException();
         }
 
-        if (jobType.equals(JobType.JREQ) && !resumeApplicantName.equals(jobSeekerName)) {
+        if (jobType.equals(JobType.JReq) && !resumeApplicantName.equals(jobSeekerName)) {
             throw new InvalidResumeException();
         }
     }
 
-    private void checkJobTypeWhenPublish(String jobType) throws NotSupportedJobTypeException {
-        if (!jobType.equals(JobType.JREQ.getName()) && !jobType.equals(JobType.ATS.getName())) {
+    private void checkJobTypeWhenPublish(JobType jobType) throws NotSupportedJobTypeException {
+        if (!jobType.equals(JobType.JReq) && !jobType.equals(JobType.ATS)) {
             throw new NotSupportedJobTypeException();
         }
     }

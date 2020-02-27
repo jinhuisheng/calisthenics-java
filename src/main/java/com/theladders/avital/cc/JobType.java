@@ -7,8 +7,9 @@ import java.util.Arrays;
  * @date 2020/2/27.
  */
 public enum JobType {
-    JREQ("JReq"),
-    ATS("ATS");
+    JReq("JReq"),
+    ATS("ATS"),
+    RJeq("RJeq");
 
     private String name;
 

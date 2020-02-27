@@ -115,7 +115,7 @@ public class ApplicationTest {
         String seniorJavaDevJob = "高级Java开发";
 
         application.publishJob(employerAlibaba, seniorJavaDevJob, "JReq");
-        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerName, null, LocalDate.now(), JobType.JREQ);
+        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerName, null, LocalDate.now(), JobType.JReq);
     }
 
     @Test(expected = InvalidResumeException.class)
@@ -126,7 +126,7 @@ public class ApplicationTest {
         String resumeApplicantName = "Jacky Chen";
 
         application.publishJob(employerAlibaba, seniorJavaDevJob, "JReq");
-        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerName, resumeApplicantName, LocalDate.now(), JobType.JREQ);
+        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerName, resumeApplicantName, LocalDate.now(), JobType.JReq);
     }
 
     @Test
@@ -219,7 +219,7 @@ public class ApplicationTest {
         application.publishJob(employerAlibaba, juniorJavaDevJob, "ATS");
         application.publishJob(employerAlibaba, seniorJavaDevJob, "JReq");
         application.applyJob(employerAlibaba, juniorJavaDevJob, jobSeekerJacky, null, LocalDate.parse("1997-07-01"), JobType.ATS);
-        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerJacky, resumeApplicantName, LocalDate.parse("1999-12-20"), JobType.JREQ);
+        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerJacky, resumeApplicantName, LocalDate.parse("1999-12-20"), JobType.JReq);
         application.applyJob(employerAlibaba, juniorJavaDevJob, jobSeekerHo, null, LocalDate.parse("1999-12-20"), JobType.ATS);
 
         List<String> applicants = application.findApplicants(seniorJavaDevJob, employerAlibaba, LocalDate.parse("1999-12-20"));
@@ -295,10 +295,10 @@ public class ApplicationTest {
         application.publishJob(employerAlibaba, juniorJavaDevJob, "ATS");
         application.publishJob(employerAlibaba, seniorJavaDevJob, "JReq");
         application.applyJob(employerAlibaba, juniorJavaDevJob, jobSeekerJacky, null, LocalDate.parse("1997-07-01"), JobType.ATS);
-        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerJacky, jackyResume, LocalDate.parse("1999-12-20"), JobType.JREQ);
+        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerJacky, jackyResume, LocalDate.parse("1999-12-20"), JobType.JReq);
         application.applyJob(employerAlibaba, juniorJavaDevJob, jobSeekerHo, null, LocalDate.parse("1999-12-20"), JobType.ATS);
         application.applyJob(employerAlibaba, juniorJavaDevJob, jobSeekerLam, null, LocalDate.parse("1999-12-20"), JobType.ATS);
-        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerLam, lamResume, LocalDate.parse("1999-12-20"), JobType.JREQ);
+        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerLam, lamResume, LocalDate.parse("1999-12-20"), JobType.JReq);
 
         String csv = application.export("csv", LocalDate.parse("1999-12-20"));
         String expected = "Employer,Job,Job Type,Applicants,Date" + "\n" + "Alibaba,Java开发,ATS,Ho,1999-12-20" + "\n" + "Alibaba,Java开发,ATS,Lam,1999-12-20" + "\n" + "Alibaba,高级Java开发,JReq,Lam,1999-12-20" + "\n" + "Alibaba,高级Java开发,JReq,Jacky,1999-12-20" + "\n";
@@ -320,10 +320,10 @@ public class ApplicationTest {
         application.publishJob(employerAlibaba, juniorJavaDevJob, "ATS");
         application.publishJob(employerAlibaba, seniorJavaDevJob, "JReq");
         application.applyJob(employerAlibaba, juniorJavaDevJob, jobSeekerJacky, null, LocalDate.parse("1997-07-01"), JobType.ATS);
-        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerJacky, jackyResume, LocalDate.parse("1999-12-20"), JobType.JREQ);
+        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerJacky, jackyResume, LocalDate.parse("1999-12-20"), JobType.JReq);
         application.applyJob(employerAlibaba, juniorJavaDevJob, jobSeekerHo, null, LocalDate.parse("1999-12-20"), JobType.ATS);
         application.applyJob(employerAlibaba, juniorJavaDevJob, jobSeekerLam, null, LocalDate.parse("1999-12-20"), JobType.ATS);
-        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerLam, lamResume, LocalDate.parse("1999-12-20"), JobType.JREQ);
+        application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerLam, lamResume, LocalDate.parse("1999-12-20"), JobType.JReq);
 
         String csv = application.export("html", LocalDate.parse("1999-12-20"));
         String expected = "<!DOCTYPE html>"
@@ -408,7 +408,7 @@ public class ApplicationTest {
         application.publishJob(employerAlibaba, seniorJavaDevJob, "JReq");
         application.publishJob(employerAlibaba, juniorJavaDevJob, "ATS");
         try {
-            application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerJacky, null, LocalDate.now(), JobType.JREQ);
+            application.applyJob(employerAlibaba, seniorJavaDevJob, jobSeekerJacky, null, LocalDate.now(), JobType.JReq);
         } catch (RequiresResumeForJReqJobException ignored) {
         }
         application.applyJob(employerAlibaba, juniorJavaDevJob, jobSeekerLam, null, LocalDate.now(), JobType.ATS);
