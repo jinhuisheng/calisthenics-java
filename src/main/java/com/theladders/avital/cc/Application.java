@@ -15,9 +15,9 @@ public class Application {
     private HashMap<String, List<Job>> seekerConcernJobs = new HashMap<>();
 
 
-    public void applyJob(String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
-        checkJobTypeWhenApplyCommand(employerName, jobName, jobSeekerName, resumeApplicantName, applicationTime, JobType.fromName(jobType));
-        addApply(employerName, jobName, jobType, jobSeekerName, applicationTime);
+    public void applyJob(String employerName, String jobName, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime, JobType jobType) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
+        checkJobTypeWhenApplyCommand(employerName, jobName, jobSeekerName, resumeApplicantName, applicationTime, jobType);
+        addApply(employerName, jobName, jobType.getName(), jobSeekerName, applicationTime);
     }
 
     void publishJob(String employerName, String jobName, String jobType) throws NotSupportedJobTypeException {
