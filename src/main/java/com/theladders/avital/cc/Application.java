@@ -79,13 +79,21 @@ public class Application {
     }
 
     List<List<String>> getJobSeekerApplications(String employerName) {
-        return jobSeekerApplications.get(employerName).stream()
+        return convert(getJobSeekerApplications_temp(employerName));
+    }
+
+    private List<List<String>> convert(List<JobApplication> jobSeekerApplications_temp) {
+        return jobSeekerApplications_temp.stream()
                 .map(job -> new ArrayList<String>() {{
                     add(job.getJobName());
                     add(job.getJobType());
                     add(job.getApplicationTime());
                     add(job.getEmployerName());
                 }}).collect(Collectors.toList());
+    }
+
+    private List<JobApplication> getJobSeekerApplications_temp(String employerName) {
+        return jobSeekerApplications.get(employerName);
     }
 
     public List<String> findApplicants(String jobName, String employerName) {
