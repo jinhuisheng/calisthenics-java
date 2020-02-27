@@ -106,6 +106,27 @@ public class Application {
         return job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 
+    private Predicate<JobApplication> queryCondition_temp(String jobName, LocalDate from, LocalDate to) {
+        if (from == null && to == null) {
+            return job -> job.getJobName().equals(jobName);
+        }
+        if (jobName == null && to == null) {
+            return job ->
+                    !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+        if (jobName == null && from == null) {
+            return job ->
+                    !to.isBefore(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+        if (jobName == null) {
+            return job -> !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+        if (to != null) {
+            return job -> job.getJobName().equals(jobName) && !to.isBefore(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+        return job -> job.getJobName().equals(jobName) && !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    }
+
     private List<String> getApplicants(Predicate<List<String>> predicate) {
         return this.jobSeekerApplications.entrySet().stream().filter(set -> {
             List<JobApplication> jobs = set.getValue();
