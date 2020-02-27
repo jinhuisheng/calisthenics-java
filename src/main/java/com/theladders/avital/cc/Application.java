@@ -75,10 +75,6 @@ public class Application {
         return jobSeekerApplications.get(employerName);
     }
 
-    public List<String> findApplicants(String jobName, String employerName) {
-        return findApplicants(jobName, employerName, null);
-    }
-
     public List<String> findApplicants(String jobName, String employerName, LocalDate from) {
         return findApplicants(jobName, employerName, from, null);
     }
