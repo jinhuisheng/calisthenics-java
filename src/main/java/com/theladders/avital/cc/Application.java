@@ -78,7 +78,7 @@ public class Application {
                 }}).collect(Collectors.toList());
     }
 
-    List<JobApplication> getJobSeekerApplications_temp(String employerName) {
+    List<JobApplication> getJobSeekerApplications(String employerName) {
         return jobSeekerApplications.get(employerName);
     }
 
