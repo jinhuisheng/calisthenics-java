@@ -88,7 +88,11 @@ public class Application {
         if (type.equals("applied")) {
             return applied.get(employerName);
         }
-
+        List<ArrayList> result = employerJobs.get(employerName).stream()
+                .map(job -> new ArrayList() {{
+                    add(job.getJobName());
+                    add(job.getJobType());
+                }}).collect(Collectors.toList());
         return jobs.get(employerName);
     }
 
