@@ -167,6 +167,21 @@ public class Application {
     }
 
     private String exportHtml(LocalDate date) {
+        StringBuilder newContent = new StringBuilder();
+        for (Entry<String, List<JobApplication>> set : this.jobSeekerApplications.entrySet()) {
+            String applicant = set.getKey();
+            newContent.append(set.getValue().stream()
+                    .map(job -> new ArrayList<String>() {{
+                        add(job.getJobName());
+                        add(job.getJobType());
+                        add(job.getApplicationTime());
+                        add(job.getEmployerName());
+                    }})
+                    .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                    .map(job -> "<tr>" + "<td>" + job.get(3) + "</td>" + "<td>" + job.get(0) + "</td>" + "<td>" + job.get(1) + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.get(2) + "</td>" + "</tr>")
+                    .collect(Collectors.joining()));
+        }
+
         StringBuilder content = new StringBuilder();
         for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
             String applicant = set.getKey();
