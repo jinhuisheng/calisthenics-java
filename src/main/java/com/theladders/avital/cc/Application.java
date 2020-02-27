@@ -64,7 +64,7 @@ public class Application {
         employerJobs.put(employerName, savedJobs);
     }
 
-    private void saveSeekerConcernJob(String employerName, String jobName, String jobType) {
+    public void saveSeekerConcernJob(String employerName, String jobName, String jobType) {
         List<Job> savedJobs = employerJobs.getOrDefault(employerName, new ArrayList<>());
         Job job = new Job(jobName, jobType);
         savedJobs.add(job);
