@@ -60,10 +60,10 @@ public class Application {
         employerJobs.put(employerName, savedJobs);
     }
 
-    public void saveSeekerConcernJob(String employerName, String jobName, String jobType) {
-        List<Job> savedJobs = seekerConcernJobs.getOrDefault(employerName, new ArrayList<>());
+    public void saveSeekerConcernJob(String jobSeekerName, String jobName, String jobType) {
+        List<Job> savedJobs = seekerConcernJobs.getOrDefault(jobSeekerName, new ArrayList<>());
         savedJobs.add(new Job(jobName, jobType));
-        seekerConcernJobs.put(employerName, savedJobs);
+        seekerConcernJobs.put(jobSeekerName, savedJobs);
     }
 
 
