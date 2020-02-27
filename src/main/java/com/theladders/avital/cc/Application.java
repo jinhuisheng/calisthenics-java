@@ -246,6 +246,19 @@ public class Application {
     }
 
     public int getSuccessfulApplications(String employerName, String jobName) {
+        int newResult = 0;
+        for (Entry<String, List<JobApplication>> set : this.jobSeekerApplications.entrySet()) {
+            List<JobApplication> jobs = set.getValue();
+            newResult += jobs.stream()
+                    .map(job -> new ArrayList<String>() {{
+                        add(job.getJobName());
+                        add(job.getJobType());
+                        add(job.getApplicationTime());
+                        add(job.getEmployerName());
+                    }})
+                    .anyMatch(job -> job.get(3).equals(employerName) && job.get(0).equals(jobName)) ? 1 : 0;
+        }
+
         int result = 0;
         for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
             List<List<String>> jobs = set.getValue();
