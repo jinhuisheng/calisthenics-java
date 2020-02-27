@@ -58,6 +58,7 @@ public class Application {
     private void addApply(String employerName, String jobName, String jobType, String jobSeekerName, LocalDate applicationTime) {
         List<List<String>> saved = this.applied.getOrDefault(jobSeekerName, new ArrayList<>());
 
+        JobApplication jobApplication = new JobApplication(jobName,jobType,applicationTime,employerName);
         saved.add(new ArrayList<String>() {{
             add(jobName);
             add(jobType);
