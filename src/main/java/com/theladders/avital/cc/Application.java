@@ -70,7 +70,12 @@ public class Application {
     private void addJob(String employerName, String jobName, String jobType) {
         List<List<String>> saved = jobs.getOrDefault(employerName, new ArrayList<>());
 
+        HashMap<String, List<Job>> employerJobs = new HashMap<>();
+        List<Job> savedJobs = employerJobs.getOrDefault(employerName, new ArrayList<>());
         Job job = new Job(jobName, jobType);
+        savedJobs.add(job);
+        employerJobs.put(employerName, savedJobs);
+
         saved.add(new ArrayList<String>() {{
             add(jobName);
             add(jobType);
