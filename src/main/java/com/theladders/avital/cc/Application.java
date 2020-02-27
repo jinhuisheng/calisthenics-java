@@ -12,7 +12,7 @@ public class Application {
     private final List<List<String>> failedApplications = new ArrayList<>();
     private HashMap<String, List<Job>> employerJobs = new HashMap<>();
     private HashMap<String, List<JobApplication>> jobSeekerApplications = new HashMap<>();
-    private List<JobApplication> failedApplication_temp = new ArrayList<>();
+    private List<JobApplication> failedApplications_temp = new ArrayList<>();
 
 
     public void execute(String command, String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
@@ -55,7 +55,7 @@ public class Application {
             add(employerName);
         }};
         failedApplications.add(failedApplication);
-        failedApplication_temp.add(new JobApplication(jobName, jobType, applicationTime, employerName));
+        failedApplications_temp.add(new JobApplication(jobName, jobType, applicationTime, employerName));
     }
 
     private void addApply(String employerName, String jobName, String jobType, String jobSeekerName, LocalDate applicationTime) {
@@ -201,6 +201,7 @@ public class Application {
     }
 
     public int getUnsuccessfulApplications(String employerName, String jobName) {
-        return (int) failedApplications.stream().filter(job -> job.get(0).equals(jobName) && job.get(3).equals(employerName)).count();
+        return (int) failedApplications_temp.stream().filter(job -> job.getJobName().equals(jobName) && job.getEmployerName().equals(employerName)).count();
+//        return (int) failedApplications.stream().filter(job -> job.get(0).equals(jobName) && job.get(3).equals(employerName)).count();
     }
 }
