@@ -20,9 +20,9 @@ public class Application {
         addApply(employerName, jobName, jobType.getName(), jobSeekerName, applicationTime);
     }
 
-    void publishJob(String employerName, String jobName, String jobType) throws NotSupportedJobTypeException {
-        checkJobTypeWhenPublish(JobType.fromName(jobType));
-        addJob(employerName, jobName, jobType);
+    void publishJob(String employerName, String jobName, JobType jobType) throws NotSupportedJobTypeException {
+        checkJobTypeWhenPublish(jobType);
+        addJob(employerName, jobName, jobType.getName());
     }
 
     private void checkJobTypeWhenApplyCommand(String employerName, String jobName, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime, JobType jobType) throws RequiresResumeForJReqJobException, InvalidResumeException {
