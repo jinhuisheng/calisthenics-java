@@ -78,7 +78,6 @@ public class ApplicationTest {
         String jobSeekerName = "Jacky";
         String jobName = "高级Java开发";
         application.publishJob(employerAlibaba, jobName, "JReq");
-//        application.execute("save", jobSeekerName, jobName, "JReq", null, null, null);
         application.saveSeekerConcernJob(jobSeekerName, jobName, "JReq");
 
         List<Job> jobs = application.getEmployerJobs(jobSeekerName);

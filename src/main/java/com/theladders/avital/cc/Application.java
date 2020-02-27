@@ -15,9 +15,6 @@ public class Application {
 
 
     public void execute(String command, String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
-        if (command == "save") {
-            saveSeekerConcernJob(employerName, jobName, jobType);
-        }
         if (command == "apply") {
             checkJobTypeWhenApplyCommand(employerName, jobName, jobType, jobSeekerName, resumeApplicantName, applicationTime);
             addApply(employerName, jobName, jobType, jobSeekerName, applicationTime);
