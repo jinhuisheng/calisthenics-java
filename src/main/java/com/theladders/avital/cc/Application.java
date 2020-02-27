@@ -81,32 +81,11 @@ public class Application {
     }
 
     public List<String> findApplicants(String jobName, String employerName, LocalDate from, LocalDate to) {
-        Predicate<JobApplication> predicate = queryCondition_temp(jobName, from, to);
-        return getApplicants_temp(predicate);
+        Predicate<JobApplication> predicate = queryCondition(jobName, from, to);
+        return getApplicants(predicate);
     }
 
-    private Predicate<List<String>> queryCondition(String jobName, LocalDate from, LocalDate to) {
-        if (from == null && to == null) {
-            return job -> job.get(0).equals(jobName);
-        }
-        if (jobName == null && to == null) {
-            return job ->
-                    !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        }
-        if (jobName == null && from == null) {
-            return job ->
-                    !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        }
-        if (jobName == null) {
-            return job -> !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        }
-        if (to != null) {
-            return job -> job.get(0).equals(jobName) && !to.isBefore(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        }
-        return job -> job.get(0).equals(jobName) && !from.isAfter(LocalDate.parse(job.get(2), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-    }
-
-    private Predicate<JobApplication> queryCondition_temp(String jobName, LocalDate from, LocalDate to) {
+    private Predicate<JobApplication> queryCondition(String jobName, LocalDate from, LocalDate to) {
         if (from == null && to == null) {
             return job -> job.getJobName().equals(jobName);
         }
@@ -127,19 +106,7 @@ public class Application {
         return job -> job.getJobName().equals(jobName) && !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 
-    private List<String> getApplicants(Predicate<List<String>> predicate) {
-        return this.jobSeekerApplications.entrySet().stream().filter(set -> {
-            List<JobApplication> jobs = set.getValue();
-            return jobs.stream().map(job -> new ArrayList<String>() {{
-                add(job.getJobName());
-                add(job.getJobType());
-                add(job.getApplicationTime());
-                add(job.getEmployerName());
-            }}).anyMatch(predicate);
-        }).map(Entry::getKey).collect(Collectors.toList());
-    }
-
-    private List<String> getApplicants_temp(Predicate<JobApplication> predicate) {
+    private List<String> getApplicants(Predicate<JobApplication> predicate) {
         return this.jobSeekerApplications.entrySet().stream()
                 .filter(set -> set.getValue().stream().anyMatch(predicate))
                 .map(Entry::getKey)
