@@ -28,7 +28,7 @@ public class Application {
         }
     }
 
-    private void publishJob(String employerName, String jobName, String jobType) throws NotSupportedJobTypeException {
+    void publishJob(String employerName, String jobName, String jobType) throws NotSupportedJobTypeException {
         checkJobTypeWhenPublish(jobType);
         addJob(employerName, jobName, jobType);
     }

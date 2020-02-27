@@ -22,7 +22,8 @@ public class ApplicationTest {
     public void employers_should_be_able_to_publish_a_job() throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
         String employerName = "";
         String jobName = "高级前端开发";
-        application.execute("publish", employerName, jobName, "JReq", null, null, null);
+//        application.execute("publish", employerName, jobName, "JReq", null, null, null);
+        application.publishJob(employerName,jobName,"JReq");
         List<Job> jobs = application.getEmployerJobs(employerName);
         List<Job> expected = new ArrayList<Job>() {{
             add(new Job("高级前端开发", "JReq"));
