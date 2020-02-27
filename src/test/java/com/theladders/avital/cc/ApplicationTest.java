@@ -25,7 +25,6 @@ public class ApplicationTest {
         }};
     }
 
-
     @Before
     public void setUp() throws Exception {
         application = new Application();
@@ -40,6 +39,13 @@ public class ApplicationTest {
         List<List<String>> expected = new ArrayList<List<String>>() {{
             add(createNewJob("高级前端开发", "JReq"));
         }};
+
+        List<Job> jobs_temp = application.getEmployerJobs_temp(employerName);
+        List<Job> expected_temp = new ArrayList<Job>() {{
+            add(new Job("高级前端开发", "JReq"));
+        }};
+
+        assertThat(jobs_temp,is(expected_temp));
 
         assertThat(jobs, is(expected));
     }
