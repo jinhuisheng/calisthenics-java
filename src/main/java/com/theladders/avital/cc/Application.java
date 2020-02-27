@@ -85,7 +85,7 @@ public class Application {
                 }}).collect(Collectors.toList());
     }
 
-    private List<List<String>> getJobSeekerApplications(String employerName) {
+    List<List<String>> getJobSeekerApplications(String employerName) {
         return jobSeekerApplications.get(employerName).stream()
                 .map(job -> new ArrayList<String>() {{
                     add(job.getJobName());

@@ -112,7 +112,7 @@ public class ApplicationTest {
         application.execute("publish", employerAlibaba, juniorJavaDevJob, "ATS", null, null, null);
         application.execute("apply", employerAlibaba, juniorJavaDevJob, "ATS", jobSeekerName, null, LocalDate.parse("2020-01-01"));
         application.execute("apply", employerAlibaba, seniorJavaDevJob, "ATS", jobSeekerName, null, LocalDate.parse("2020-01-01"));
-        List<List<String>> appliedJobs = application.getJobs(jobSeekerName, "applied");
+        List<List<String>> appliedJobs = application.getJobSeekerApplications(jobSeekerName);
         List<List<String>> expected = new ArrayList<List<String>>() {{
             add(createNewJob("Java开发", "ATS", "Alibaba", "2020-01-01"));
             add(createNewJob("高级Java开发", "ATS", "Alibaba", "2020-01-01"));
@@ -422,7 +422,8 @@ public class ApplicationTest {
         application.execute("publish", employerAlibaba, juniorJavaDevJob, "ATS", null, null, null);
         try {
             application.execute("apply", employerAlibaba, seniorJavaDevJob, "JReq", jobSeekerJacky, null, LocalDate.now());
-        } catch (RequiresResumeForJReqJobException ignored) {}
+        } catch (RequiresResumeForJReqJobException ignored) {
+        }
         application.execute("apply", employerAlibaba, juniorJavaDevJob, "ATS", jobSeekerLam, null, LocalDate.now());
 
         assertThat(application.getUnsuccessfulApplications(employerAlibaba, seniorJavaDevJob), is(1));
