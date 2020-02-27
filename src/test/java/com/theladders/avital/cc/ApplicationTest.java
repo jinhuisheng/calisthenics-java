@@ -124,12 +124,13 @@ public class ApplicationTest {
             add(createNewJob("高级Java开发", "ATS", "Alibaba", "2020-01-01"));
         }};
 
+        List<JobApplication> appliedJobs_temp = application.getJobSeekerApplications_temp(jobSeekerName);
         List<JobApplication> expected_temp = new ArrayList<JobApplication>() {{
             add(createJobApplication("Java开发", "ATS", "Alibaba", "2020-01-01"));
             add(createJobApplication("高级Java开发", "ATS", "Alibaba", "2020-01-01"));
         }};
 
-
+        assertThat(appliedJobs_temp, is(expected_temp));
 
         assertThat(appliedJobs, is(expected));
     }

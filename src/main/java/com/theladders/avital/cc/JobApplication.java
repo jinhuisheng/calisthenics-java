@@ -1,5 +1,7 @@
 package com.theladders.avital.cc;
 
+import com.google.common.base.Objects;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -41,5 +43,21 @@ public class JobApplication {
 
     public String getEmployerName() {
         return employerName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        JobApplication that = (JobApplication) o;
+        return Objects.equal(jobName, that.jobName) &&
+                Objects.equal(jobType, that.jobType) &&
+                Objects.equal(applicationTime, that.applicationTime) &&
+                Objects.equal(employerName, that.employerName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(jobName, jobType, applicationTime, employerName);
     }
 }
