@@ -16,8 +16,7 @@ public class Application {
 
     public void execute(String command, String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
         if (command == "publish") {
-            checkJobTypeWhenPublish(jobType);
-            addJob(employerName, jobName, jobType);
+            publishJob(employerName, jobName, jobType);
             return;
         }
         if (command == "save") {
@@ -27,6 +26,11 @@ public class Application {
             checkJobTypeWhenApplyCommand(employerName, jobName, jobType, jobSeekerName, resumeApplicantName, applicationTime);
             addApply(employerName, jobName, jobType, jobSeekerName, applicationTime);
         }
+    }
+
+    private void publishJob(String employerName, String jobName, String jobType) throws NotSupportedJobTypeException {
+        checkJobTypeWhenPublish(jobType);
+        addJob(employerName, jobName, jobType);
     }
 
     private void checkJobTypeWhenApplyCommand(String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws RequiresResumeForJReqJobException, InvalidResumeException {
@@ -183,6 +187,8 @@ public class Application {
     }
 
     public int getUnsuccessfulApplications(String employerName, String jobName) {
-        return (int) failedApplications.stream().filter(job -> job.getJobName().equals(jobName) && job.getEmployerName().equals(employerName)).count();
+        return (int) failedApplications.stream()
+                .filter(job -> job.getJobName().equals(jobName) && job.getEmployerName().equals(employerName))
+                .count();
     }
 }
