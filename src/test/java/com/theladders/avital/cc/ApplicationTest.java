@@ -80,7 +80,7 @@ public class ApplicationTest {
         application.publishJob(employerAlibaba, jobName, "JReq");
         application.saveSeekerConcernJob(jobSeekerName, jobName, "JReq");
 
-        List<Job> jobs = application.getEmployerJobs(jobSeekerName);
+        List<Job> jobs = application.getSeekerConcernJobs(jobSeekerName);
         List<Job> expected = new ArrayList<Job>() {{
             add(new Job("高级Java开发", "JReq"));
         }};

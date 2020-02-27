@@ -12,6 +12,7 @@ public class Application {
     private HashMap<String, List<Job>> employerJobs = new HashMap<>();
     private HashMap<String, List<JobApplication>> jobSeekerApplications = new HashMap<>();
     private List<JobApplication> failedApplications = new ArrayList<>();
+    private HashMap<String, List<Job>> seekerConcernJobs = new HashMap<>();
 
 
     public void applyJob(String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
@@ -60,10 +61,9 @@ public class Application {
     }
 
     public void saveSeekerConcernJob(String employerName, String jobName, String jobType) {
-        List<Job> savedJobs = employerJobs.getOrDefault(employerName, new ArrayList<>());
-        Job job = new Job(jobName, jobType);
-        savedJobs.add(job);
-        employerJobs.put(employerName, savedJobs);
+        List<Job> savedJobs = seekerConcernJobs.getOrDefault(employerName, new ArrayList<>());
+        savedJobs.add(new Job(jobName, jobType));
+        seekerConcernJobs.put(employerName, savedJobs);
     }
 
 
@@ -189,5 +189,9 @@ public class Application {
         return (int) failedApplications.stream()
                 .filter(job -> job.getJobName().equals(jobName) && job.getEmployerName().equals(employerName))
                 .count();
+    }
+
+    public List<Job> getSeekerConcernJobs(String jobSeekerName) {
+        return seekerConcernJobs.get(jobSeekerName);
     }
 }
