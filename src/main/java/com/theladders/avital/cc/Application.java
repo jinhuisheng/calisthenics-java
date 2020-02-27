@@ -139,6 +139,14 @@ public class Application {
         }).map(Entry::getKey).collect(Collectors.toList());
     }
 
+    private List<String> getApplicants_temp(Predicate<JobApplication> predicate) {
+        return this.jobSeekerApplications.entrySet().stream()
+                .filter(set -> set.getValue().stream().anyMatch(predicate))
+                .map(Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+
     /**
      * 导出已申请的数据
      *
