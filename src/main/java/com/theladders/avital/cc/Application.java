@@ -63,6 +63,7 @@ public class Application {
         List<JobApplication> savedJobApplications = jobSeekerApplications.getOrDefault(jobSeekerName, new ArrayList<>());
         JobApplication jobApplication = new JobApplication(jobName, jobType, applicationTime, employerName);
         savedJobApplications.add(jobApplication);
+        jobSeekerApplications.put(jobSeekerName, savedJobApplications);
 
         saved.add(new ArrayList<String>() {{
             add(jobName);
