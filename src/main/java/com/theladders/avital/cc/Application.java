@@ -16,7 +16,7 @@ public class Application {
 
 
     public void applyJob(String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
-        checkJobTypeWhenApplyCommand(employerName, jobName, jobType, jobSeekerName, resumeApplicantName, applicationTime);
+        checkJobTypeWhenApplyCommand(employerName, jobName, jobSeekerName, resumeApplicantName, applicationTime, JobType.fromName(jobType));
         addApply(employerName, jobName, jobType, jobSeekerName, applicationTime);
     }
 
@@ -25,13 +25,13 @@ public class Application {
         addJob(employerName, jobName, jobType);
     }
 
-    private void checkJobTypeWhenApplyCommand(String employerName, String jobName, String jobType, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime) throws RequiresResumeForJReqJobException, InvalidResumeException {
-        if (jobType.equals(JobType.JREQ.getName()) && resumeApplicantName == null) {
-            addFailedApplications(employerName, jobName, jobType, applicationTime);
+    private void checkJobTypeWhenApplyCommand(String employerName, String jobName, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime, JobType jobType) throws RequiresResumeForJReqJobException, InvalidResumeException {
+        if (jobType.equals(JobType.JREQ) && resumeApplicantName == null) {
+            addFailedApplications(employerName, jobName, jobType.getName(), applicationTime);
             throw new RequiresResumeForJReqJobException();
         }
 
-        if (jobType.equals(JobType.JREQ.getName()) && !resumeApplicantName.equals(jobSeekerName)) {
+        if (jobType.equals(JobType.JREQ) && !resumeApplicantName.equals(jobSeekerName)) {
             throw new InvalidResumeException();
         }
     }
