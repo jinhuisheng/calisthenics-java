@@ -14,15 +14,6 @@ import static org.junit.Assert.assertThat;
 public class ApplicationTest {
     Application application;
 
-    private ArrayList<String> createNewJob(String jobName, String jobType, String employerName, String applicationTime) {
-        return new ArrayList<String>() {{
-            add(jobName);
-            add(jobType);
-            add(applicationTime);
-            add(employerName);
-        }};
-    }
-
     private JobApplication createJobApplication(String jobName, String jobType, String employerName, String applicationTime) {
         return new JobApplication(jobName, jobType, applicationTime, employerName);
     }
@@ -125,16 +116,6 @@ public class ApplicationTest {
             add(createJobApplication("高级Java开发", "ATS", "Alibaba", "2020-01-01"));
         }};
         assertThat(appliedJobs_temp, is(expected_temp));
-    }
-
-    private List<List<String>> convert(List<JobApplication> jobSeekerApplications_temp) {
-        return jobSeekerApplications_temp.stream()
-                .map(job -> new ArrayList<String>() {{
-                    add(job.getJobName());
-                    add(job.getJobType());
-                    add(job.getApplicationTime());
-                    add(job.getEmployerName());
-                }}).collect(Collectors.toList());
     }
 
     @Test(expected = RequiresResumeForJReqJobException.class)
