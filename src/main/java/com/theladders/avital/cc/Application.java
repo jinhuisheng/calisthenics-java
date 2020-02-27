@@ -75,11 +75,11 @@ public class Application {
         return jobSeekerApplications.get(employerName);
     }
 
-    public List<String> findApplicants(String jobName, String employerName, LocalDate from) {
-        return findApplicants(jobName, employerName, from, null);
+    public List<String> findApplicants(String jobName, LocalDate from) {
+        return findApplicants(jobName, from, null);
     }
 
-    public List<String> findApplicants(String jobName, String employerName, LocalDate from, LocalDate to) {
+    public List<String> findApplicants(String jobName, LocalDate from, LocalDate to) {
         Predicate<JobApplication> predicate = queryCondition(jobName, from, to);
         return getApplicants(predicate);
     }
