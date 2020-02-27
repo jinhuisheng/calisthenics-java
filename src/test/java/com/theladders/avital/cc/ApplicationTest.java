@@ -40,7 +40,7 @@ public class ApplicationTest {
         String employerName = "";
         String jobName = "高级前端开发";
         application.execute("publish", employerName, jobName, "JReq", null, null, null);
-        List<List<String>> jobs = application.getJobs(employerName, "published");
+        List<List<String>> jobs = application.getEmployerJobs(employerName);
         List<List<String>> expected = new ArrayList<List<String>>() {{
             add(createNewJob("高级前端开发", "JReq"));
         }};
@@ -56,7 +56,7 @@ public class ApplicationTest {
         String juniorJavaDevJob = "Java开发";
         application.execute("publish", employerAlibaba, seniorJavaDevJob, "JReq", null, null, null);
         application.execute("publish", employerTencent, juniorJavaDevJob, "JReq", null, null, null);
-        List<List<String>> jobs = application.getJobs(employerAlibaba, "published");
+        List<List<String>> jobs = application.getEmployerJobs(employerAlibaba);
         List<List<String>> expected = new ArrayList<List<String>>() {{
             add(createNewJob("高级Java开发", "JReq"));
         }};
@@ -70,7 +70,7 @@ public class ApplicationTest {
         String seniorJavaDevJob = "高级Java开发";
 
         application.execute("publish", employerAlibaba, seniorJavaDevJob, "ATS", null, null, null);
-        List<List<String>> jobs = application.getJobs(employerAlibaba, "published");
+        List<List<String>> jobs = application.getEmployerJobs(employerAlibaba);
         List<List<String>> expected = new ArrayList<List<String>>() {{
             add(createNewJob("高级Java开发", "ATS"));
         }};
@@ -93,7 +93,7 @@ public class ApplicationTest {
         String jobName = "高级Java开发";
         application.execute("publish", employerAlibaba, jobName, "JReq", null, null, null);
         application.execute("save", jobSeekerName, jobName, "JReq", null, null, null);
-        List<List<String>> savedJobs = application.getJobs(jobSeekerName, "published");
+        List<List<String>> savedJobs = application.getEmployerJobs(jobSeekerName);
         List<List<String>> expected = new ArrayList<List<String>>() {{
             add(createNewJob("高级Java开发", "JReq"));
         }};
