@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -112,13 +113,23 @@ public class ApplicationTest {
         application.execute("publish", employerAlibaba, juniorJavaDevJob, "ATS", null, null, null);
         application.execute("apply", employerAlibaba, juniorJavaDevJob, "ATS", jobSeekerName, null, LocalDate.parse("2020-01-01"));
         application.execute("apply", employerAlibaba, seniorJavaDevJob, "ATS", jobSeekerName, null, LocalDate.parse("2020-01-01"));
-        List<List<String>> appliedJobs = application.getJobSeekerApplications(jobSeekerName);
+        List<List<String>> appliedJobs = convert(application.getJobSeekerApplications_temp(jobSeekerName));
         List<List<String>> expected = new ArrayList<List<String>>() {{
             add(createNewJob("Java开发", "ATS", "Alibaba", "2020-01-01"));
             add(createNewJob("高级Java开发", "ATS", "Alibaba", "2020-01-01"));
         }};
 
         assertThat(appliedJobs, is(expected));
+    }
+
+    private List<List<String>> convert(List<JobApplication> jobSeekerApplications_temp) {
+        return jobSeekerApplications_temp.stream()
+                .map(job -> new ArrayList<String>() {{
+                    add(job.getJobName());
+                    add(job.getJobType());
+                    add(job.getApplicationTime());
+                    add(job.getEmployerName());
+                }}).collect(Collectors.toList());
     }
 
     @Test(expected = RequiresResumeForJReqJobException.class)

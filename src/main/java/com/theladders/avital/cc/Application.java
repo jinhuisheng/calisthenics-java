@@ -92,7 +92,7 @@ public class Application {
                 }}).collect(Collectors.toList());
     }
 
-    private List<JobApplication> getJobSeekerApplications_temp(String employerName) {
+     List<JobApplication> getJobSeekerApplications_temp(String employerName) {
         return jobSeekerApplications.get(employerName);
     }
 
