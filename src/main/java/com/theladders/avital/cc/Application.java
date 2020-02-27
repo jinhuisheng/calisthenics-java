@@ -58,20 +58,20 @@ public class Application {
     }
 
     private void addApply(String employerName, String jobName, String jobType, String jobSeekerName, LocalDate applicationTime) {
-        List<List<String>> saved = this.applied.getOrDefault(jobSeekerName, new ArrayList<>());
+//        List<List<String>> saved = this.applied.getOrDefault(jobSeekerName, new ArrayList<>());
 
         List<JobApplication> savedJobApplications = jobSeekerApplications.getOrDefault(jobSeekerName, new ArrayList<>());
         JobApplication jobApplication = new JobApplication(jobName, jobType, applicationTime, employerName);
         savedJobApplications.add(jobApplication);
         jobSeekerApplications.put(jobSeekerName, savedJobApplications);
 
-        saved.add(new ArrayList<String>() {{
-            add(jobName);
-            add(jobType);
-            add(applicationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            add(employerName);
-        }});
-        applied.put(jobSeekerName, saved);
+//        saved.add(new ArrayList<String>() {{
+//            add(jobName);
+//            add(jobType);
+//            add(applicationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//            add(employerName);
+//        }});
+//        applied.put(jobSeekerName, saved);
     }
 
     private void addJob(String employerName, String jobName, String jobType) {
@@ -83,14 +83,14 @@ public class Application {
 
     public List<List<String>> getJobs(String employerName, String type) {
         if (type.equals("applied")) {
-            jobSeekerApplications.get(employerName).stream()
+            return jobSeekerApplications.get(employerName).stream()
                     .map(job -> new ArrayList<String>() {{
                         add(job.getJobName());
                         add(job.getJobType());
                         add(job.getApplicationTime());
                         add(job.getEmployerName());
                     }}).collect(Collectors.toList());
-        return applied.get(employerName);
+//            return applied.get(employerName);
         }
         return employerJobs.get(employerName).stream()
                 .map(job -> new ArrayList<String>() {{
@@ -137,7 +137,7 @@ public class Application {
         List<String> result = new ArrayList<String>() {
         };
 
-        this.jobSeekerApplications.entrySet().stream().filter(set -> {
+    return     this.jobSeekerApplications.entrySet().stream().filter(set -> {
             List<JobApplication> jobs = set.getValue();
             return jobs.stream().map(job -> new ArrayList<String>() {{
                 add(job.getJobName());
@@ -147,15 +147,15 @@ public class Application {
             }}).anyMatch(predicate);
         }).map(Entry::getKey).collect(Collectors.toList());
 
-        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
-            String applicant = set.getKey();
-            List<List<String>> jobs = set.getValue();
-            boolean hasAppliedToThisJob = jobs.stream().anyMatch(predicate);
-            if (hasAppliedToThisJob) {
-                result.add(applicant);
-            }
-        }
-        return result;
+//        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
+//            String applicant = set.getKey();
+//            List<List<String>> jobs = set.getValue();
+//            boolean hasAppliedToThisJob = jobs.stream().anyMatch(predicate);
+//            if (hasAppliedToThisJob) {
+//                result.add(applicant);
+//            }
+//        }
+//        return result;
     }
 
     /**
@@ -189,14 +189,14 @@ public class Application {
                     .collect(Collectors.joining()));
         }
 
-        StringBuilder content = new StringBuilder();
-        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
-            String applicant = set.getKey();
-            content.append(set.getValue().stream()
-                    .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
-                    .map(job -> "<tr>" + "<td>" + job.get(3) + "</td>" + "<td>" + job.get(0) + "</td>" + "<td>" + job.get(1) + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.get(2) + "</td>" + "</tr>")
-                    .collect(Collectors.joining()));
-        }
+//        StringBuilder content = new StringBuilder();
+//        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
+//            String applicant = set.getKey();
+//            content.append(set.getValue().stream()
+//                    .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+//                    .map(job -> "<tr>" + "<td>" + job.get(3) + "</td>" + "<td>" + job.get(0) + "</td>" + "<td>" + job.get(1) + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.get(2) + "</td>" + "</tr>")
+//                    .collect(Collectors.joining()));
+//        }
 
         return "<!DOCTYPE html>"
                 + "<body>"
@@ -211,7 +211,7 @@ public class Application {
                 + "</tr>"
                 + "</thead>"
                 + "<tbody>"
-                + content
+                + newContent
                 + "</tbody>"
                 + "</table>"
                 + "</body>"
@@ -234,15 +234,16 @@ public class Application {
                     .collect(Collectors.joining()));
         }
 
-        StringBuilder result = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
-        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
-            String applicant = set.getKey();
-            result.append(set.getValue().stream()
-                    .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
-                    .map(job -> job.get(3) + "," + job.get(0) + "," + job.get(1) + "," + applicant + "," + job.get(2) + "\n")
-                    .collect(Collectors.joining()));
-        }
-        return result.toString();
+        return newResult.toString();
+//        StringBuilder result = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
+//        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
+//            String applicant = set.getKey();
+//            result.append(set.getValue().stream()
+//                    .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+//                    .map(job -> job.get(3) + "," + job.get(0) + "," + job.get(1) + "," + applicant + "," + job.get(2) + "\n")
+//                    .collect(Collectors.joining()));
+//        }
+//        return result.toString();
     }
 
     public int getSuccessfulApplications(String employerName, String jobName) {
@@ -259,12 +260,13 @@ public class Application {
                     .anyMatch(job -> job.get(3).equals(employerName) && job.get(0).equals(jobName)) ? 1 : 0;
         }
 
-        int result = 0;
-        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
-            List<List<String>> jobs = set.getValue();
-            result += jobs.stream().anyMatch(job -> job.get(3).equals(employerName) && job.get(0).equals(jobName)) ? 1 : 0;
-        }
-        return result;
+        return newResult;
+//        int result = 0;
+//        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
+//            List<List<String>> jobs = set.getValue();
+//            result += jobs.stream().anyMatch(job -> job.get(3).equals(employerName) && job.get(0).equals(jobName)) ? 1 : 0;
+//        }
+//        return result;
     }
 
     public int getUnsuccessfulApplications(String employerName, String jobName) {
