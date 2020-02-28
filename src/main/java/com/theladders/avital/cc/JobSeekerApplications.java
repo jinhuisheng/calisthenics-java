@@ -79,15 +79,15 @@ public class JobSeekerApplications {
      * @return
      */
     public String export(String type, LocalDate date) {
+        Map<String, List<JobApplication>> exportData = getExportData(date);
         if ("csv".equals(type)) {
-            return exportCsv(date);
+            return exportCsv(exportData);
         } else {
-            return exportHtml(date);
+            return exportHtml(exportData);
         }
     }
 
-    private String exportHtml(LocalDate date) {
-        Map<String, List<JobApplication>> exportData = getExportData(date);
+    private String exportHtml(Map<String, List<JobApplication>> exportData) {
         StringBuilder newContent = new StringBuilder();
         for (Map.Entry<String, List<JobApplication>> set : exportData.entrySet()) {
             String applicant = set.getKey();
@@ -116,8 +116,7 @@ public class JobSeekerApplications {
                 + "</html>";
     }
 
-    private String exportCsv(LocalDate date) {
-        Map<String, List<JobApplication>> exportData = getExportData(date);
+    private String exportCsv(Map<String, List<JobApplication>> exportData) {
         StringBuilder newResult = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
         for (Map.Entry<String, List<JobApplication>> set : exportData.entrySet()) {
             String applicant = set.getKey();
