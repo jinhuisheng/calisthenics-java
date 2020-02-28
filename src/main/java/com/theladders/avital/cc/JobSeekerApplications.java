@@ -38,19 +38,19 @@ public class JobSeekerApplications {
         }
         if (jobName == null && to == null) {
             return job ->
-                    !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                    !from.isAfter(convertToDate(job.getApplicationTime()));
         }
         if (jobName == null && from == null) {
             return job ->
-                    !to.isBefore(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                    !to.isBefore(convertToDate(job.getApplicationTime()));
         }
         if (jobName == null) {
-            return job -> !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))) && !to.isBefore(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            return job -> !from.isAfter(convertToDate(job.getApplicationTime())) && !to.isBefore(convertToDate(job.getApplicationTime()));
         }
         if (to != null) {
-            return job -> job.getJobName().equals(jobName) && !to.isBefore(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            return job -> job.getJobName().equals(jobName) && !to.isBefore(convertToDate(job.getApplicationTime()));
         }
-        return job -> job.getJobName().equals(jobName) && !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        return job -> job.getJobName().equals(jobName) && !from.isAfter(convertToDate(job.getApplicationTime()));
     }
 
     private Predicate<JobApplication> queryCondition_temp(String jobName, LocalDate from, LocalDate to) {
@@ -59,14 +59,16 @@ public class JobSeekerApplications {
             allPredicates.add(job -> job.getJobName().equals(jobName));
         }
         if (from != null) {
-            allPredicates.add(job ->
-                    !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+            allPredicates.add(job -> !from.isAfter(convertToDate(job.getApplicationTime())));
         }
         if (to != null) {
-            allPredicates.add(job ->
-                    !to.isBefore(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+            allPredicates.add(job -> !to.isBefore(convertToDate(job.getApplicationTime())));
         }
         return allPredicates.stream().reduce(x -> true, Predicate::and);
+    }
+
+    private LocalDate convertToDate(String applicationTime) {
+        return LocalDate.parse(applicationTime, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
 
