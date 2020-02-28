@@ -55,9 +55,6 @@ public class Application {
 
     public void saveSeekerConcernJob(String jobSeekerName, String jobName, String jobType) {
         seekerConcernJobs.saveSeekerConcernJob(jobSeekerName, jobName, jobType);
-//        List<Job> savedJobs = seekerConcernJobs.getOrDefault(jobSeekerName, new ArrayList<>());
-//        savedJobs.add(new Job(jobName, jobType));
-//        seekerConcernJobs.put(jobSeekerName, savedJobs);
     }
 
 
