@@ -11,7 +11,7 @@ import java.util.List;
 public class EmployerJobs {
     private HashMap<String, List<Job>> employerJobs = new HashMap<>();
 
-    private void addJob(String employerName, String jobName, String jobType) {
+    public void addJob(String employerName, String jobName, String jobType) {
         List<Job> savedJobs = employerJobs.getOrDefault(employerName, new ArrayList<>());
         Job job = new Job(jobName, jobType);
         savedJobs.add(job);

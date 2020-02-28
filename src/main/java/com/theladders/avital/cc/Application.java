@@ -13,6 +13,7 @@ public class Application {
     private HashMap<String, List<JobApplication>> jobSeekerApplications = new HashMap<>();
     private List<JobApplication> failedApplications = new ArrayList<>();
     private HashMap<String, List<Job>> seekerConcernJobs = new HashMap<>();
+    private EmployerJobs employerJobs_temp = new EmployerJobs();
 
 
     public void applyJob(String employerName, String jobName, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime, JobType jobType) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
@@ -22,7 +23,8 @@ public class Application {
 
     void publishJob(String employerName, String jobName, JobType jobType) throws NotSupportedJobTypeException {
         checkJobTypeWhenPublish(jobType);
-        addJob(employerName, jobName, jobType.getName());
+//        addJob(employerName, jobName, jobType.getName());
+        employerJobs_temp.addJob(employerName, jobName, jobType.getName());
     }
 
     private void checkJobTypeWhenApplyCommand(String employerName, String jobName, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime, JobType jobType) throws RequiresResumeForJReqJobException, InvalidResumeException {
@@ -68,7 +70,8 @@ public class Application {
 
 
     List<Job> getEmployerJobs(String employerName) {
-        return employerJobs.get(employerName);
+        return employerJobs_temp.getEmployerJobs(employerName);
+//        return employerJobs.get(employerName);
     }
 
     List<JobApplication> getJobSeekerApplications(String employerName) {
