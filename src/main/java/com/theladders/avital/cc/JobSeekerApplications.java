@@ -70,7 +70,6 @@ public class JobSeekerApplications {
         return newResult;
     }
 
-
     /**
      * 导出已申请的数据
      *
@@ -80,51 +79,7 @@ public class JobSeekerApplications {
      */
     public String export(String type, LocalDate date) {
         Map<String, List<JobApplication>> exportData = getExportData(date);
-        if ("csv".equals(type)) {
-            return exportCsv(exportData);
-        } else {
-            return exportHtml(exportData);
-        }
-    }
-
-    private String exportHtml(Map<String, List<JobApplication>> exportData) {
-        StringBuilder newContent = new StringBuilder();
-        for (Map.Entry<String, List<JobApplication>> set : exportData.entrySet()) {
-            String applicant = set.getKey();
-            newContent.append(set.getValue().stream()
-                    .map(job -> "<tr>" + "<td>" + job.getEmployerName() + "</td>" + "<td>" + job.getJobName() + "</td>" + "<td>" + job.getJobType() + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.getApplicationTime() + "</td>" + "</tr>")
-                    .collect(Collectors.joining()));
-        }
-
-        return "<!DOCTYPE html>"
-                + "<body>"
-                + "<table>"
-                + "<thead>"
-                + "<tr>"
-                + "<th>Employer</th>"
-                + "<th>Job</th>"
-                + "<th>Job Type</th>"
-                + "<th>Applicants</th>"
-                + "<th>Date</th>"
-                + "</tr>"
-                + "</thead>"
-                + "<tbody>"
-                + newContent
-                + "</tbody>"
-                + "</table>"
-                + "</body>"
-                + "</html>";
-    }
-
-    private String exportCsv(Map<String, List<JobApplication>> exportData) {
-        StringBuilder newResult = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
-        for (Map.Entry<String, List<JobApplication>> set : exportData.entrySet()) {
-            String applicant = set.getKey();
-            newResult.append(set.getValue().stream()
-                    .map(job -> job.getEmployerName() + "," + job.getJobName() + "," + job.getJobType() + "," + applicant + "," + job.getApplicationTime() + "\n")
-                    .collect(Collectors.joining()));
-        }
-        return newResult.toString();
+        return Exporter.export(type, exportData);
     }
 
     private Map<String, List<JobApplication>> getExportData(LocalDate date) {
