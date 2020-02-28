@@ -15,14 +15,6 @@ public class Job {
         this.jobType = jobType;
     }
 
-    public String getJobName() {
-        return jobName;
-    }
-
-    public String getJobType() {
-        return jobType;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

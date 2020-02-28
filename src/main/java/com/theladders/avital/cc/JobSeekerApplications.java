@@ -32,6 +32,13 @@ public class JobSeekerApplications {
         return getApplicants(predicate);
     }
 
+    private List<String> getApplicants(Predicate<JobApplication> predicate) {
+        return this.jobSeekerApplications.entrySet().stream()
+                .filter(set -> set.getValue().stream().anyMatch(predicate))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
     private Predicate<JobApplication> queryCondition(String jobName, LocalDate from, LocalDate to) {
         List<Predicate<JobApplication>> allPredicates = new ArrayList<>();
         if (jobName != null) {
@@ -50,15 +57,6 @@ public class JobSeekerApplications {
         return LocalDate.parse(applicationTime, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-
-    private List<String> getApplicants(Predicate<JobApplication> predicate) {
-        return this.jobSeekerApplications.entrySet().stream()
-                .filter(set -> set.getValue().stream().anyMatch(predicate))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
-    }
-
-
     public int getSuccessfulApplications(String employerName, String jobName) {
         int newResult = 0;
         for (Map.Entry<String, List<JobApplication>> set : this.jobSeekerApplications.entrySet()) {
@@ -70,13 +68,6 @@ public class JobSeekerApplications {
         return newResult;
     }
 
-    /**
-     * 导出已申请的数据
-     *
-     * @param type
-     * @param date
-     * @return
-     */
     public String export(String type, LocalDate date) {
         Map<String, List<JobApplication>> exportData = getExportData(date);
         return Exporter.export(type, exportData);

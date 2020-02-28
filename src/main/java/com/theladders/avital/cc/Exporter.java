@@ -16,6 +16,7 @@ public class Exporter {
             return exportHtml(exportData);
         }
     }
+
     private static String exportHtml(Map<String, List<JobApplication>> exportData) {
         StringBuilder newContent = new StringBuilder();
         for (Map.Entry<String, List<JobApplication>> set : exportData.entrySet()) {
