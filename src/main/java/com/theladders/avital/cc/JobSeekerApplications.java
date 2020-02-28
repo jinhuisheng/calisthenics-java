@@ -71,4 +71,61 @@ public class JobSeekerApplications {
     }
 
 
+    /**
+     * 导出已申请的数据
+     *
+     * @param type
+     * @param date
+     * @return
+     */
+    public String export(String type, LocalDate date) {
+        if ("csv".equals(type)) {
+            return exportCsv(date);
+        } else {
+            return exportHtml(date);
+        }
+    }
+
+    private String exportHtml(LocalDate date) {
+        StringBuilder newContent = new StringBuilder();
+        for (Map.Entry<String, List<JobApplication>> set : this.jobSeekerApplications.entrySet()) {
+            String applicant = set.getKey();
+            newContent.append(set.getValue().stream()
+                    .filter(job -> job.getApplicationTime().equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                    .map(job -> "<tr>" + "<td>" + job.getEmployerName() + "</td>" + "<td>" + job.getJobName() + "</td>" + "<td>" + job.getJobType() + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.getApplicationTime() + "</td>" + "</tr>")
+                    .collect(Collectors.joining()));
+        }
+
+        return "<!DOCTYPE html>"
+                + "<body>"
+                + "<table>"
+                + "<thead>"
+                + "<tr>"
+                + "<th>Employer</th>"
+                + "<th>Job</th>"
+                + "<th>Job Type</th>"
+                + "<th>Applicants</th>"
+                + "<th>Date</th>"
+                + "</tr>"
+                + "</thead>"
+                + "<tbody>"
+                + newContent
+                + "</tbody>"
+                + "</table>"
+                + "</body>"
+                + "</html>";
+    }
+
+    private String exportCsv(LocalDate date) {
+        StringBuilder newResult = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
+        for (Map.Entry<String, List<JobApplication>> set : this.jobSeekerApplications.entrySet()) {
+            String applicant = set.getKey();
+            newResult.append(set.getValue().stream()
+                    .filter(job -> job.getApplicationTime().equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                    .map(job -> job.getEmployerName() + "," + job.getJobName() + "," + job.getJobType() + "," + applicant + "," + job.getApplicationTime() + "\n")
+                    .collect(Collectors.joining()));
+        }
+        return newResult.toString();
+    }
+
 }
