@@ -10,7 +10,7 @@ import static java.util.Map.*;
 
 public class Application {
     private HashMap<String, List<JobApplication>> jobSeekerApplications = new HashMap<>();
-    private FailedApplications failedApplications_temp = new FailedApplications();
+    private FailedApplications failedApplications = new FailedApplications();
     private SeekerConcernJobs seekerConcernJobs = new SeekerConcernJobs();
     private EmployerJobs employerJobs = new EmployerJobs();
 
@@ -27,7 +27,7 @@ public class Application {
 
     private void checkJobTypeWhenApplyCommand(String employerName, String jobName, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime, JobType jobType) throws RequiresResumeForJReqJobException, InvalidResumeException {
         if (jobType.equals(JobType.JReq) && resumeApplicantName == null) {
-            addFailedApplications(employerName, jobName, jobType.getName(), applicationTime);
+            failedApplications.addFailedApplications(employerName, jobName, jobType.getName(), applicationTime);
             throw new RequiresResumeForJReqJobException();
         }
 
@@ -40,10 +40,6 @@ public class Application {
         if (!jobType.equals(JobType.JReq) && !jobType.equals(JobType.ATS)) {
             throw new NotSupportedJobTypeException();
         }
-    }
-
-    private void addFailedApplications(String employerName, String jobName, String jobType, LocalDate applicationTime) {
-        failedApplications_temp.addFailedApplications(employerName, jobName, jobType, applicationTime);
     }
 
     private void addApply(String employerName, String jobName, String jobType, String jobSeekerName, LocalDate applicationTime) {
@@ -173,7 +169,7 @@ public class Application {
     }
 
     public int getUnsuccessfulApplications(String employerName, String jobName) {
-        return failedApplications_temp.getUnsuccessfulApplications(employerName, jobName);
+        return failedApplications.getUnsuccessfulApplications(employerName, jobName);
     }
 
     public List<Job> getSeekerConcernJobs(String jobSeekerName) {
