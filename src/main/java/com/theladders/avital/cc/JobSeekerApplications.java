@@ -28,32 +28,11 @@ public class JobSeekerApplications {
     }
 
     public List<String> findApplicants(String jobName, LocalDate from, LocalDate to) {
-        Predicate<JobApplication> predicate = queryCondition_temp(jobName, from, to);
+        Predicate<JobApplication> predicate = queryCondition(jobName, from, to);
         return getApplicants(predicate);
     }
 
     private Predicate<JobApplication> queryCondition(String jobName, LocalDate from, LocalDate to) {
-        if (from == null && to == null) {
-            return job -> job.getJobName().equals(jobName);
-        }
-        if (jobName == null && to == null) {
-            return job ->
-                    !from.isAfter(convertToDate(job.getApplicationTime()));
-        }
-        if (jobName == null && from == null) {
-            return job ->
-                    !to.isBefore(convertToDate(job.getApplicationTime()));
-        }
-        if (jobName == null) {
-            return job -> !from.isAfter(convertToDate(job.getApplicationTime())) && !to.isBefore(convertToDate(job.getApplicationTime()));
-        }
-        if (to != null) {
-            return job -> job.getJobName().equals(jobName) && !to.isBefore(convertToDate(job.getApplicationTime()));
-        }
-        return job -> job.getJobName().equals(jobName) && !from.isAfter(convertToDate(job.getApplicationTime()));
-    }
-
-    private Predicate<JobApplication> queryCondition_temp(String jobName, LocalDate from, LocalDate to) {
         List<Predicate<JobApplication>> allPredicates = new ArrayList<>();
         if (jobName != null) {
             allPredicates.add(job -> job.getJobName().equals(jobName));
