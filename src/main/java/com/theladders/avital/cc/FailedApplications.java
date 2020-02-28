@@ -11,7 +11,7 @@ import java.util.List;
 public class FailedApplications {
     private List<JobApplication> failedApplications = new ArrayList<>();
 
-    private void addFailedApplications(String employerName, String jobName, String jobType, LocalDate applicationTime) {
+    public void addFailedApplications(String employerName, String jobName, String jobType, LocalDate applicationTime) {
         failedApplications.add(new JobApplication(jobName, jobType, applicationTime, employerName));
     }
 

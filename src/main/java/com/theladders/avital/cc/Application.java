@@ -11,6 +11,7 @@ import static java.util.Map.*;
 public class Application {
     private HashMap<String, List<JobApplication>> jobSeekerApplications = new HashMap<>();
     private List<JobApplication> failedApplications = new ArrayList<>();
+    private FailedApplications failedApplications_temp = new FailedApplications();
     private SeekerConcernJobs seekerConcernJobs = new SeekerConcernJobs();
     private EmployerJobs employerJobs = new EmployerJobs();
 
@@ -43,6 +44,8 @@ public class Application {
     }
 
     private void addFailedApplications(String employerName, String jobName, String jobType, LocalDate applicationTime) {
+        failedApplications_temp.addFailedApplications(employerName, jobName, jobType, applicationTime);
+
         failedApplications.add(new JobApplication(jobName, jobType, applicationTime, employerName));
     }
 
@@ -173,9 +176,10 @@ public class Application {
     }
 
     public int getUnsuccessfulApplications(String employerName, String jobName) {
-        return (int) failedApplications.stream()
-                .filter(job -> job.getJobName().equals(jobName) && job.getEmployerName().equals(employerName))
-                .count();
+        return failedApplications_temp.getUnsuccessfulApplications(employerName, jobName);
+//        return (int) failedApplications.stream()
+//                .filter(job -> job.getJobName().equals(jobName) && job.getEmployerName().equals(employerName))
+//                .count();
     }
 
     public List<Job> getSeekerConcernJobs(String jobSeekerName) {
