@@ -13,8 +13,7 @@ public class EmployerJobs {
 
     public void addJob(String employerName, String jobName, String jobType) {
         List<Job> savedJobs = employerJobs.getOrDefault(employerName, new ArrayList<>());
-        Job job = new Job(jobName, jobType);
-        savedJobs.add(job);
+        savedJobs.add(new Job(jobName, jobType));
         employerJobs.put(employerName, savedJobs);
     }
 

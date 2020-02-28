@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 import static java.util.Map.*;
 
 public class Application {
-    private HashMap<String, List<Job>> employerJobs = new HashMap<>();
     private HashMap<String, List<JobApplication>> jobSeekerApplications = new HashMap<>();
     private List<JobApplication> failedApplications = new ArrayList<>();
     private HashMap<String, List<Job>> seekerConcernJobs = new HashMap<>();
@@ -23,7 +22,6 @@ public class Application {
 
     void publishJob(String employerName, String jobName, JobType jobType) throws NotSupportedJobTypeException {
         checkJobTypeWhenPublish(jobType);
-//        addJob(employerName, jobName, jobType.getName());
         employerJobs_temp.addJob(employerName, jobName, jobType.getName());
     }
 
@@ -55,13 +53,6 @@ public class Application {
         jobSeekerApplications.put(jobSeekerName, savedJobApplications);
     }
 
-    private void addJob(String employerName, String jobName, String jobType) {
-        List<Job> savedJobs = employerJobs.getOrDefault(employerName, new ArrayList<>());
-        Job job = new Job(jobName, jobType);
-        savedJobs.add(job);
-        employerJobs.put(employerName, savedJobs);
-    }
-
     public void saveSeekerConcernJob(String jobSeekerName, String jobName, String jobType) {
         List<Job> savedJobs = seekerConcernJobs.getOrDefault(jobSeekerName, new ArrayList<>());
         savedJobs.add(new Job(jobName, jobType));
@@ -71,7 +62,6 @@ public class Application {
 
     List<Job> getEmployerJobs(String employerName) {
         return employerJobs_temp.getEmployerJobs(employerName);
-//        return employerJobs.get(employerName);
     }
 
     List<JobApplication> getJobSeekerApplications(String employerName) {
