@@ -87,11 +87,11 @@ public class JobSeekerApplications {
     }
 
     private String exportHtml(LocalDate date) {
+        Map<String, List<JobApplication>> exportData = getExportData(date);
         StringBuilder newContent = new StringBuilder();
-        for (Map.Entry<String, List<JobApplication>> set : this.jobSeekerApplications.entrySet()) {
+        for (Map.Entry<String, List<JobApplication>> set : exportData.entrySet()) {
             String applicant = set.getKey();
             newContent.append(set.getValue().stream()
-                    .filter(job -> job.getApplicationTime().equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
                     .map(job -> "<tr>" + "<td>" + job.getEmployerName() + "</td>" + "<td>" + job.getJobName() + "</td>" + "<td>" + job.getJobType() + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.getApplicationTime() + "</td>" + "</tr>")
                     .collect(Collectors.joining()));
         }
@@ -117,15 +117,26 @@ public class JobSeekerApplications {
     }
 
     private String exportCsv(LocalDate date) {
+        Map<String, List<JobApplication>> exportData = getExportData(date);
         StringBuilder newResult = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");
-        for (Map.Entry<String, List<JobApplication>> set : this.jobSeekerApplications.entrySet()) {
+        for (Map.Entry<String, List<JobApplication>> set : exportData.entrySet()) {
             String applicant = set.getKey();
             newResult.append(set.getValue().stream()
-                    .filter(job -> job.getApplicationTime().equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
                     .map(job -> job.getEmployerName() + "," + job.getJobName() + "," + job.getJobType() + "," + applicant + "," + job.getApplicationTime() + "\n")
                     .collect(Collectors.joining()));
         }
         return newResult.toString();
+    }
+
+    private Map<String, List<JobApplication>> getExportData(LocalDate date) {
+        return this.jobSeekerApplications.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> filter(date, e.getValue())));
+    }
+
+    private List<JobApplication> filter(LocalDate date, List<JobApplication> jobApplicationList) {
+        return jobApplicationList.stream()
+                .filter(job -> job.getApplicationTime().equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                .collect(Collectors.toList());
     }
 
 }
