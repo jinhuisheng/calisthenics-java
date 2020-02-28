@@ -11,7 +11,6 @@ import static java.util.Map.*;
 public class Application {
     private HashMap<String, List<JobApplication>> jobSeekerApplications = new HashMap<>();
     private List<JobApplication> failedApplications = new ArrayList<>();
-    private HashMap<String, List<Job>> seekerConcernJobs = new HashMap<>();
     private SeekerConcernJobs seekerConcernJobs_temp = new SeekerConcernJobs();
     private EmployerJobs employerJobs = new EmployerJobs();
 
@@ -55,10 +54,10 @@ public class Application {
     }
 
     public void saveSeekerConcernJob(String jobSeekerName, String jobName, String jobType) {
-
-        List<Job> savedJobs = seekerConcernJobs.getOrDefault(jobSeekerName, new ArrayList<>());
-        savedJobs.add(new Job(jobName, jobType));
-        seekerConcernJobs.put(jobSeekerName, savedJobs);
+        seekerConcernJobs_temp.saveSeekerConcernJob(jobSeekerName, jobName, jobType);
+//        List<Job> savedJobs = seekerConcernJobs.getOrDefault(jobSeekerName, new ArrayList<>());
+//        savedJobs.add(new Job(jobName, jobType));
+//        seekerConcernJobs.put(jobSeekerName, savedJobs);
     }
 
 
@@ -183,6 +182,6 @@ public class Application {
     }
 
     public List<Job> getSeekerConcernJobs(String jobSeekerName) {
-        return seekerConcernJobs.get(jobSeekerName);
+        return seekerConcernJobs_temp.getSeekerConcernJobs(jobSeekerName);
     }
 }
