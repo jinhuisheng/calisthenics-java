@@ -10,7 +10,7 @@ public class Application {
     private EmployerJobs employerJobs = new EmployerJobs();
 
 
-    public void applyJob(String employerName, String jobName, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime, JobType jobType) throws NotSupportedJobTypeException, RequiresResumeForJReqJobException, InvalidResumeException {
+    public void applyJob(String employerName, String jobName, String jobSeekerName, String resumeApplicantName, LocalDate applicationTime, JobType jobType) throws RequiresResumeForJReqJobException, InvalidResumeException {
         checkJobTypeWhenApplyCommand(employerName, jobName, jobSeekerName, resumeApplicantName, applicationTime, jobType);
         jobSeekerApplications.addApply(employerName, jobName, jobType.getName(), jobSeekerName, applicationTime);
     }
@@ -47,10 +47,6 @@ public class Application {
 
     List<JobApplication> getJobSeekerApplications(String employerName) {
         return jobSeekerApplications.getJobSeekerApplications(employerName);
-    }
-
-    public List<String> findApplicants(String jobName, LocalDate from) {
-        return findApplicants(jobName, from, null);
     }
 
     public List<String> findApplicants(String jobName, LocalDate from, LocalDate to) {
