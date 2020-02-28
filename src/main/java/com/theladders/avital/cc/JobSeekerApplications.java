@@ -15,18 +15,20 @@ import java.util.stream.Collectors;
  */
 public class JobSeekerApplications {
     private HashMap<String, List<JobApplication>> jobSeekerApplications = new HashMap<>();
+
     public void addApply(String employerName, String jobName, String jobType, String jobSeekerName, LocalDate applicationTime) {
         List<JobApplication> savedJobApplications = jobSeekerApplications.getOrDefault(jobSeekerName, new ArrayList<>());
         JobApplication jobApplication = new JobApplication(jobName, jobType, applicationTime, employerName);
         savedJobApplications.add(jobApplication);
         jobSeekerApplications.put(jobSeekerName, savedJobApplications);
     }
+
     List<JobApplication> getJobSeekerApplications(String employerName) {
         return jobSeekerApplications.get(employerName);
     }
 
     public List<String> findApplicants(String jobName, LocalDate from, LocalDate to) {
-        Predicate<JobApplication> predicate = queryCondition(jobName, from, to);
+        Predicate<JobApplication> predicate = queryCondition_temp(jobName, from, to);
         return getApplicants(predicate);
     }
 
@@ -50,6 +52,23 @@ public class JobSeekerApplications {
         }
         return job -> job.getJobName().equals(jobName) && !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
+
+    private Predicate<JobApplication> queryCondition_temp(String jobName, LocalDate from, LocalDate to) {
+        List<Predicate<JobApplication>> allPredicates = new ArrayList<>();
+        if (jobName != null) {
+            allPredicates.add(job -> job.getJobName().equals(jobName));
+        }
+        if (from != null) {
+            allPredicates.add(job ->
+                    !from.isAfter(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        }
+        if (to != null) {
+            allPredicates.add(job ->
+                    !to.isBefore(LocalDate.parse(job.getApplicationTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+        }
+        return allPredicates.stream().reduce(x -> true, Predicate::and);
+    }
+
 
     private List<String> getApplicants(Predicate<JobApplication> predicate) {
         return this.jobSeekerApplications.entrySet().stream()
