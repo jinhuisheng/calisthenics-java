@@ -144,20 +144,44 @@ public class Application {
         if ("csv".equals(type)) {
             return exportCsv(date);
         } else {
-            return exportHtml(date);
+            return exportHtml_temp(date);
         }
     }
 
     private String exportHtml(LocalDate date) {
-        StringBuilder content = new StringBuilder();
-        for (Entry<String, List<List<String>>> set : this.applied.entrySet()) {
-            String applicant = set.getKey();
-            content.append(set.getValue().stream()
-                    .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
-                    .map(job -> "<tr>" + "<td>" + job.get(3) + "</td>" + "<td>" + job.get(0) + "</td>" + "<td>" + job.get(1) + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.get(2) + "</td>" + "</tr>")
-                    .collect(Collectors.joining()));
-        }
+        String content = this.applied.entrySet()
+                .stream()
+                .map(set -> set.getValue().stream()
+                        .filter(job -> job.get(2).equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                        .map(job -> joinHtmlElement(set.getKey(), job))
+                        .collect(Collectors.joining()))
+                .collect(Collectors.joining());
 
+        return toHtml(content);
+    }
+
+    private String joinHtmlElement(String applicant, List<String> job) {
+        return "<tr>" + "<td>" + job.get(3) + "</td>" + "<td>" + job.get(0) + "</td>" + "<td>" + job.get(1) + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.get(2) + "</td>" + "</tr>";
+    }
+
+
+    private String exportHtml_temp(LocalDate date) {
+        String content = this.jobSeekerApplications.entrySet()
+                .stream()
+                .map(set -> set.getValue().stream()
+                        .filter(job -> job.getApplicationTime().equals(date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))))
+                        .map(job -> joinHtml_temp(set.getKey(), job))
+                        .collect(Collectors.joining()))
+                .collect(Collectors.joining());
+
+        return toHtml(content);
+    }
+
+    private String joinHtml_temp(String applicant, JobApplication job) {
+        return "<tr>" + "<td>" + job.getEmployerName() + "</td>" + "<td>" + job.getJobName() + "</td>" + "<td>" + job.getJobType() + "</td>" + "<td>" + applicant + "</td>" + "<td>" + job.getApplicationTime() + "</td>" + "</tr>";
+    }
+
+    private String toHtml(String content) {
         return "<!DOCTYPE html>"
                 + "<body>"
                 + "<table>"
@@ -177,6 +201,7 @@ public class Application {
                 + "</body>"
                 + "</html>";
     }
+
 
     private String exportCsv(LocalDate date) {
         StringBuilder result = new StringBuilder("Employer,Job,Job Type,Applicants,Date" + "\n");

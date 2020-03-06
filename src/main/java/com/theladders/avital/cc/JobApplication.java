@@ -31,4 +31,8 @@ public class JobApplication {
     public String getEmployerName() {
         return employerName;
     }
+
+    public String getJobType() {
+        return jobType;
+    }
 }
