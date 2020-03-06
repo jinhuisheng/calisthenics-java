@@ -19,4 +19,16 @@ public class JobApplication {
         this.applicationTime = applicationTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.employerName = employerName;
     }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public String getApplicationTime() {
+        return applicationTime;
+    }
+
+    public String getEmployerName() {
+        return employerName;
+    }
 }
